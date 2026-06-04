@@ -11,6 +11,7 @@ language-agnostic) so Russian recall works without fact extraction.
 """
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import memory_plant_rs as mp
@@ -18,13 +19,29 @@ import memory_plant_rs as mp
 from embed import DIM, embed
 
 DOC_STORE = "/Users/abzaltuganbay/projects/edge-lora-test/mp_docs.bin"
+FACTS_STORE = "/Users/abzaltuganbay/projects/edge-lora-test/mp_facts.json"
 USER = "demo"
+
+# render a structured fact as a 2nd-person sentence — so RECALL echoes the right
+# person ("тебя зовут…", not "меня зовут…") regardless of how it was phrased.
+_PRED_RU = {
+    "name": "Тебя зовут {v}.", "age": "Тебе {v}.", "weight": "Ты весишь {v}.",
+    "height": "Твой рост — {v}.", "city": "Ты живёшь в городе {v}.",
+    "country": "Ты живёшь в {v}.", "job": "Ты работаешь: {v}.",
+    "hobby": "Твоё хобби — {v}.", "pet": "У тебя есть {v}.",
+    "email": "Твой email — {v}.", "phone": "Твой телефон — {v}.", "goal": "Твоя цель — {v}.",
+}
+
+
+def normalize_fact(predicate: str, value: str) -> str:
+    return _PRED_RU.get(predicate, "Про тебя: {p} — {v}.").format(v=value, p=predicate)
 
 
 class Memory:
-    def __init__(self, user: str = USER, doc_path: str = DOC_STORE, dim: int = DIM):
+    def __init__(self, user: str = USER, doc_path: str = DOC_STORE, dim: int = DIM,
+                 facts_path: str = FACTS_STORE):
         self.dim = dim
-        self.facts = mp.PersonalMemory(user)            # HLB facts (own dim, no e5)
+        self.facts = mp.PersonalMemory(user)            # HLB facts (provable forget)
         self._doc_path = Path(doc_path)
         if self._doc_path.exists():
             try:
@@ -33,6 +50,20 @@ class Memory:
                 self.docs = mp.DocumentMemory(dim)
         else:
             self.docs = mp.DocumentMemory(dim)
+        # structured facts: JSON is the persisted source of truth (HLB isn't saved
+        # by the bindings yet); mirror into PersonalMemory for forget/HLB.
+        self._facts_path = Path(facts_path)
+        self._kv = {}
+        if self._facts_path.exists():
+            try:
+                self._kv = json.loads(self._facts_path.read_text(encoding="utf-8"))
+            except Exception:
+                self._kv = {}
+        for p, v in self._kv.items():
+            try:
+                self.facts.store_fact(p, v)
+            except Exception:
+                pass
 
     # ---------- facts (HLB, no e5) ----------
     def remember(self, message: str):
@@ -41,6 +72,18 @@ class Memory:
 
     def store_fact(self, predicate: str, value: str, subject: str = "user"):
         self.facts.store_fact(predicate, value, subject)
+
+    def remember_fact(self, predicate: str, value: str) -> str:
+        """Store a structured fact (overwrites prior value) + persist to JSON.
+        Returns the 2nd-person rendering used for the acknowledgement."""
+        self.facts.store_fact(predicate, value, "user")
+        self._kv[predicate] = value
+        self._facts_path.write_text(json.dumps(self._kv, ensure_ascii=False), encoding="utf-8")
+        return normalize_fact(predicate, value)
+
+    def render_facts(self) -> str:
+        """All current facts as 2nd-person lines (source for self-question recall)."""
+        return "\n".join(normalize_fact(p, v) for p, v in self._kv.items())
 
     def recall(self, predicate: str, subject: str | None = None):
         return self.facts.recall(predicate, subject)

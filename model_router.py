@@ -7,6 +7,9 @@ Pairs with compare_routers.py (accuracy + latency vs the keyword router).
 """
 from __future__ import annotations
 
+import json
+import re
+
 from mlx_lm import generate
 from mlx_lm.sample_utils import make_sampler
 
@@ -62,3 +65,34 @@ def classify(model, tok, q: str, history=None) -> str:
         if lab in out:
             return lab
     return "question"                        # safe default
+
+
+_EXTRACT = (
+    "Извлеки из сообщения ОДИН факт о пользователе. Верни СТРОГО JSON: "
+    '{"predicate":"<поле латиницей>","value":"<значение>"}\n'
+    "Поля: name, age, weight, height, city, country, job, hobby, pet, email, phone, goal.\n"
+    "Примеры:\n"
+    'Меня зовут Абзал -> {"predicate":"name","value":"Абзал"}\n'
+    'я вешу 85 кг -> {"predicate":"weight","value":"85 кг"}\n'
+    'я живу в Алматы -> {"predicate":"city","value":"Алматы"}\n'
+    'мне 30 лет -> {"predicate":"age","value":"30 лет"}\n'
+    'я увлекаюсь пейзажной фотографией -> {"predicate":"hobby","value":"пейзажная фотография"}\n'
+    'у меня есть кот -> {"predicate":"pet","value":"кот"}\n'
+    "Только JSON, без пояснений."
+)
+
+
+def extract_fact(model, tok, statement: str):
+    """Extract (predicate, value) from a first-person personal statement.
+    Returns (None, None) if nothing clean could be parsed."""
+    msgs = [{"role": "system", "content": _EXTRACT}, {"role": "user", "content": statement}]
+    prompt = tok.apply_chat_template(msgs, add_generation_prompt=True, enable_thinking=False)
+    out = generate(model, tok, prompt=prompt, max_tokens=48, verbose=False,
+                   sampler=make_sampler(temp=0.0))
+    try:
+        d = json.loads(re.search(r"\{[^{}]*\}", out, re.S).group())
+        p = str(d.get("predicate", "")).strip().lower()
+        v = str(d.get("value", "")).strip()
+        return (p, v) if p and v else (None, None)
+    except Exception:
+        return (None, None)

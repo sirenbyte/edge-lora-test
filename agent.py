@@ -25,7 +25,7 @@ from mlx_lm.tuner.utils import load_adapters, remove_lora_layers
 import hobby_pack
 import prefs
 import proactive
-from model_router import classify as _classify
+from model_router import classify as _classify, extract_fact as _extract_fact
 from vision_unload import load_text_only
 
 BASE = "mlx-community/Qwen3.5-4B-MLX-4bit"
@@ -346,7 +346,9 @@ class Agent:
 
     def retrieve(self, q):
         try:
-            return "\n".join(self.mem.retrieve_texts(q, k=3, min_score=0.3))
+            facts = self.mem.render_facts()                # current structured facts (2nd-person)
+            docs = self.mem.retrieve_texts(q, k=3, min_score=0.3)
+            return "\n".join(([facts] if facts else []) + docs).strip()
         except Exception:
             return ""
 
@@ -421,13 +423,13 @@ class Agent:
         if (d["mode"] == "analytical" and d["system"] is None and not d["tools"]
                 and not d.get("force") and is_fact):
             self.set_mode("analytical")
-            self.ingest(q)
-            msgs = [{"role": "system", "content":
-                     "Пользователь сообщил факт о себе. Подтверди КРАТКО и по-дружески "
-                     "одной фразой, что запомнил это (можешь повторить факт). "
-                     "Без вопросов и без вступлений."},
-                    {"role": "user", "content": q}]
-            ans = _strip(self._gen(msgs, think=False, temp=0.3))
+            pred, val = _extract_fact(self.model, self.tok, q)
+            if pred and val:
+                norm = self.mem.remember_fact(pred, val)   # structured + 2nd-person + persist
+                ans = f"Запомнил 👍 {norm}"
+            else:
+                self.ingest(q)                             # not cleanly structured -> raw doc
+                ans = "Запомнил 👍"
             return {"mode": "analytical", "think": False, "tool": None,
                     "result": None, "answer": ans}
         self.set_mode(d["mode"])

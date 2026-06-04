@@ -367,8 +367,10 @@ class Agent:
 
     def retrieve(self, q):
         try:
-            facts = self.mem.render_facts()                # current structured facts (2nd-person)
-            docs = self.mem.retrieve_texts(q, k=3, min_score=0.3)
+            # inject user facts ONLY when the turn is about the user — otherwise a
+            # vague turn ("насколько") drowns in facts and the model grabs a random one.
+            facts = self.mem.render_facts() if _about_self(q) else ""
+            docs = self.mem.retrieve_texts(q, k=3, min_score=0.4)
             return "\n".join(([facts] if facts else []) + docs).strip()
         except Exception:
             return ""

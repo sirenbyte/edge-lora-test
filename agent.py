@@ -376,7 +376,28 @@ def _label_to_route(label, q):
 
 
 def _strip(s):
-    return re.sub(r"<think>.*?</think>", "", s, flags=re.S).strip()
+    s = re.sub(r"<think>.*?</think>", "", s, flags=re.S)
+    s = re.sub(r"<tool_call>.*?(</tool_call>|$)", "", s, flags=re.S)  # drop stray/partial tool tags
+    return s.strip()
+
+
+def _repair(name, params):
+    """Deterministic tool-arg repair (cheap grammar-constraint substitute): snap enum
+    declensions ('в спальне'->'спальня'), coerce numeric args. Kills the format-failure
+    class without an llguidance grammar (noted as production hardening)."""
+    p = dict(params)
+    if "room" in p and p["room"] not in ROOM_ENUM:
+        low = p["room"].lower()
+        for r in ROOM_ENUM:
+            if r[:4] in low:                     # спальн -> спальне/в спальне ...
+                p["room"] = r
+                break
+    for k in ("minutes", "level"):
+        if k in p and not str(p[k]).strip().isdigit():
+            m = re.search(r"\d+", str(p[k]))
+            if m:
+                p[k] = m.group()
+    return name, p
 
 
 class Agent:
@@ -540,7 +561,7 @@ class Agent:
                             d.get("rep_penalty"))
         tc = parse_tool_call(out)
         if tc:
-            name, params = tc
+            name, params = _repair(*tc)         # snap enum declensions / coerce numerics
             result = exec_tool(name, params)
             final = self._gen(
                 [{"role": "user", "content":

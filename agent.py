@@ -307,6 +307,18 @@ SELF_ANSWER = (
 SELF_KW = ("ты умный", "ты умён", "насколько умный", "насколько ты", "ты тупой",
            "ты глупый", "ты способ", "на что ты способ", "что ты умеешь", "что умеешь",
            "что ты можешь", "какой ты", "ты крут", "ты лучше", "умный ли ты", "ты толков")
+# bare one-word follow-ups to "ты умный?" ('умный', 'насколько', 'тупой') lose
+# context and make the identity adapter ramble with person confusion -> catch them.
+_SELF_BARE = {"умный", "умён", "умен", "тупой", "глупый", "туповат", "насколько",
+              "способный", "крутой", "толковый", "умница", "сообразительный", "глуп"}
+
+
+def _is_self(low):
+    s = low.strip(" ?.!,")
+    if any(k in s for k in SELF_KW):
+        return True
+    w = s.split()
+    return len(w) <= 2 and bool(set(w) & _SELF_BARE)
 SYS_NUDGE = ("Ты — Qiyas Edge. На основе привычки пользователя сформулируй ОДНО "
              "короткое тёплое предложение-напоминание (мягкий вопрос + уместный эмодзи). "
              "Без вступлений и пояснений — только сама фраза, по-дружески, на «ты».")
@@ -340,7 +352,7 @@ def route(q):
     if any(k in low for k in COMPUTE_KW) or re.search(r"\d+\s*[+\-*/^%]\s*\d+", q):
         return {"mode": "analytical", "system": None, "tools": [CALC_TOOL],
                 "think": False, "temp": 0.0, "force": ("calculate", "expression")}
-    if any(k in low for k in SELF_KW):
+    if _is_self(low):
         return {"mode": "analytical", "system": None, "tools": None,
                 "think": False, "temp": 0.0, "self": True}
     if any(k in low for k in COMPANION_KW):

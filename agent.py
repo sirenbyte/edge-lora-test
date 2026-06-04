@@ -389,16 +389,19 @@ class Agent:
         n = proactive.due(now=now)
         if not n:
             return None
-        self.set_mode("analytical")
-        msgs = [{"role": "system", "content": SYS_NUDGE},
-                {"role": "user", "content": f"Привычка: {n['text']}. Предложи мягко, одной фразой."}]
-        try:
-            say = _strip(self._gen(msgs, think=False, temp=0.6, rep_penalty=1.2))
-            say = say.splitlines()[0].strip() if say else ""
-        except Exception:
-            say = ""
-        if not say or len(say) > 160:
-            say = n["say"]                      # fallback to deterministic template
+        if n["cat"] in proactive.TEMPLATE_CATS:
+            say = n["say"]                      # item-specific → exact template
+        else:                                   # soft category → 4B phrases warmly
+            self.set_mode("analytical")
+            msgs = [{"role": "system", "content": SYS_NUDGE},
+                    {"role": "user", "content": f"Привычка: {n['text']}. Предложи мягко, одной фразой."}]
+            try:
+                say = _strip(self._gen(msgs, think=False, temp=0.6, rep_penalty=1.2))
+                say = say.splitlines()[0].strip() if say else ""
+            except Exception:
+                say = ""
+            if not say or len(say) > 160:
+                say = n["say"]                  # fallback to deterministic template
         proactive.mark_sent(n, now=now)
         return {**n, "say": say}
 
@@ -407,6 +410,50 @@ class Agent:
         (proactive.accept if accepted else proactive.dismiss)(nudge)
         return "учту 👍" if accepted else "понял, буду реже"
     # -----------------------------------------------------------------
+
+
+_YES = ("да", "ага", "давай", "ок", "окей", "yes", "y", "+", "конечно", "го", "угу")
+
+
+def _maybe_nudge(a):
+    """Opportunistic proactive check between turns. All restraint lives in
+    tick()/proactive.due(); here we just surface it and capture the reaction."""
+    n = a.tick()
+    if not n:
+        return
+    print(f"   💡 {n['say']}")
+    try:
+        ans = input("      [да/нет] > ").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        print()
+        return
+    accepted = any(ans == w or ans.startswith(w + " ") for w in _YES)
+    print(f"      {a.nudge_feedback(n, accepted)}\n")
+
+
+def chat():
+    """Interactive REPL with opportunistic proactive nudges between turns.
+    In production the phone scheduler fires tick() on a timer; here we check it
+    on open and after each reply (guardrails keep it from nagging)."""
+    a = Agent()
+    print("\nQiyas Edge — чат (проактивные подсказки включены). 'выход' — выйти.\n", flush=True)
+    _maybe_nudge(a)                        # a nudge may greet you on open
+    while True:
+        try:
+            q = input("> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+        if not q:
+            continue
+        if q.lower() in ("выход", "выйти", "exit", "quit", ":q"):
+            print("Пока! 👋")
+            break
+        r = a.respond(q)
+        if r["tool"]:
+            print(f"   ⚙ {r['tool']} → {r['result']}")
+        print(f"   {r['answer']}\n")
+        _maybe_nudge(a)                    # check again after each reply
 
 
 DEMO = [
@@ -422,6 +469,9 @@ DEMO = [
 
 
 def main():
+    if "--chat" in sys.argv[1:]:
+        chat()
+        return
     a = Agent()
     qs = [sys.argv[1]] if len(sys.argv) > 1 else DEMO
     for q in qs:

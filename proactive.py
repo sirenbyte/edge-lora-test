@@ -22,6 +22,10 @@ NUDGE_LOG = "/Users/abzaltuganbay/projects/edge-lora-test/nudges.json"
 COOLDOWN_HRS = 6.0          # don't repeat the same nudge within 6h
 DAILY_CAP = 3               # at most 3 proactive nudges per day
 MIN_SCORE = 2.5             # confidence gate (higher than insights' default 1.5)
+# item-specific categories → use the EXACT template (the precise item matters,
+# e.g. "lo-fi"/"овсянка"/"пробежка"); 'soft' categories (content/mood) let the
+# 4B phrase it warmly.
+TEMPLATE_CATS = {"music", "food", "activity"}
 
 _GREET = {"morning": "Доброе утро! ", "evening": "Добрый вечер! ", "day": "", "night": ""}
 _BODY = {

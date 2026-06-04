@@ -14,7 +14,6 @@ import json
 import math
 import operator
 import re
-import subprocess
 import sys
 import urllib.parse
 import urllib.request
@@ -34,9 +33,8 @@ SYS_CREATIVE = ("Ты — Qiyas Edge в творческом режиме. Бу�
                 "разнообразные, яркие, образные идеи. Сразу к делу, без вступлений.")
 ROOM_ENUM = ["кухня", "спальня", "гостиная", "ванная", "коридор"]
 
-# ---- memory bridge (Python Memory Plant via system python3) ----
-MP_PY = "python3"
-MP_BRIDGE = "/Users/abzaltuganbay/projects/edge-lora-test/mp_bridge.py"
+# ---- memory: in-process Rust core (memory_plant_rs) + e5 via MLX, see memory.py ----
+# (replaces the old system-python mp_bridge subprocess — one runtime now)
 REMEMBER_KW = ("меня зовут", "моё имя", "мое имя", "я люблю", "я увлекаюсь", "запомни",
                "я работаю", "я живу", "я предпочитаю", "мне нравится", "мой ", "моя ", "мои ")
 
@@ -279,6 +277,7 @@ class Agent:
         self.model, self.tok, stats = load_text_only(BASE)
         print(f"  {stats}", flush=True)
         self._cur = None
+        self._mem = None                       # lazy in-process Memory (e5 + Rust core)
 
     def set_mode(self, mode):
         adapter = ADAPTERS[mode]
@@ -289,12 +288,18 @@ class Agent:
         load_adapters(self.model, adapter)
         self._cur = adapter
 
-    # ---- Memory Plant integration (subprocess -> system python3) ----
+    # ---- Memory Plant integration (in-process: memory_plant_rs + e5/MLX) ----
+    @property
+    def mem(self):
+        """Lazy — load e5 + the Rust doc store only when memory is first used."""
+        if self._mem is None:
+            from memory import Memory
+            self._mem = Memory()
+        return self._mem
+
     def retrieve(self, q):
         try:
-            r = subprocess.run([MP_PY, MP_BRIDGE, "search", q],
-                               capture_output=True, text=True, timeout=90)
-            return r.stdout.strip()
+            return "\n".join(self.mem.retrieve_texts(q, k=3, min_score=0.3))
         except Exception:
             return ""
 
@@ -302,11 +307,13 @@ class Agent:
         if not should_remember(q):
             return
         try:
-            subprocess.run([MP_PY, MP_BRIDGE, "ingest", q],
-                           capture_output=True, text=True, timeout=90)
+            import hashlib
+            doc_id = "msg_" + hashlib.md5(q.encode("utf-8")).hexdigest()[:10]
+            self.mem.store_document(doc_id, q)
+            self.mem.save()
         except Exception:
             pass
-    # (hobby RAG packs plug into retrieve() the same way later)
+    # (hobby RAG packs share the same Memory.store_document/retrieve)
     # -----------------------------------------------------------------
 
     def _gen(self, msgs, think, temp, tools=None, tool_choice=None, rep_penalty=None):

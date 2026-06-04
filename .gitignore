@@ -28,6 +28,8 @@ preferences.json
 notes.json
 reminders.json
 mp_store.json
+mp_docs.bin
+e5_mlx_vectors.json
 
 # --- python env / caches ---
 .venv/

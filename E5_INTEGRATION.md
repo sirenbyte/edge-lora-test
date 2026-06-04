@@ -66,35 +66,37 @@ def on_user_message(msg):
 
 ---
 
-## Reality check — what `memory_plant_rs` exposes TODAY (2026-06-04)
+## ✅ UNIFIED — in-process, one runtime (2026-06-04)
 
-Verified against the installed module + `rust/src/`:
+`embed.py` (e5/MLX) + `memory_plant_rs` (Rust core) are joined in **`memory.py`** —
+NO system-python subprocess. `agent.py` retrieve/ingest run through it in-process.
 
-- **Exposed to Python now:**
-  - `PersonalMemory` — `store_fact`, `ingest`, `recall`, `all_facts`, `forget`, `forget_all`,
-    `user_id`. **Facts only, no vectors** → the §4 fact path works today.
-  - `AdaptiveMemory` — `store`, `retrieve`, `dim`, `n_shards`, `shard_capacity`, `total_facts`.
-    A **vector store** (sharded). The low-level place precomputed e5 vectors can land now.
-- **In the Rust crate but NOT yet PyO3-bound (another session is exposing it):**
-  - `chunk_text(text, chunk_size, chunk_overlap)` — the §2 chunker.
-  - `DocumentMemory<Encoder>` + `SearchHit { chunk_id, doc_id, score, text }` — the §2/§3
-    text-bearing doc layer.
-  - `Encoder` trait (pluggable) with a **default `fastembed` encoder (AllMiniLM-L6-v2)**.
+The Rust **document/RAG layer is now PyO3-bound** (added this session in
+`memory-plant-rs/python-bindings/src/lib.rs`):
+- `memory_plant_rs.DocumentMemory(dim=384)` — `add_document(doc_id, chunks, embeddings, metadata=None)`,
+  `search(query_emb, k=5, min_score=None, doc_ids=None) -> [{chunk_id, doc_id, score, text}]`,
+  `save(path)`, `DocumentMemory.load(path, dim)`. Uses a no-op `MockEncoder` →
+  **precomputed e5 vectors only** (the encoder is never invoked).
+- `memory_plant_rs.chunk_text(text, chunk_size=200, chunk_overlap=20) -> [str]`.
 
-### Two gotchas this implies
-1. **Don't let MP embed.** The Rust `DocumentMemory` default encoder is fastembed
-   **MiniLM-L6-v2**, NOT e5. Our contract = inject **precomputed e5 vectors**
-   (`add_document_with_embeddings` / a custom `Encoder`), so the embedder stays the
-   single MLX e5 — never two models.
+Also exposed: `PersonalMemory` (facts: `store_fact`/`ingest`/`recall`/`all_facts`/`forget`/`forget_all`)
+and `AdaptiveMemory` (HLB key→value `store`/`retrieve`). `Memory` (memory.py) wraps facts
+(PersonalMemory) + docs (DocumentMemory) + e5 (embed.py).
+
+### Two gotchas (still apply)
+1. **Don't let MP embed.** The Rust `DocumentMemory` has a default `fastembed` encoder
+   (**MiniLM-L6-v2**). Our binding deliberately uses `MockEncoder` + the precomputed path,
+   so the embedder stays the single MLX e5 — never two models.
 2. **384 collision is a trap.** e5-small AND MiniLM-L6 are both 384-d, so a mismatch
-   will NOT error — it will just retrieve garbage. The dim matching is necessary but
-   not sufficient: the **model** must match too. One model, end to end.
+   will NOT error — it just retrieves garbage. Dim match is necessary, not sufficient:
+   the **model** must match too. One model, end to end.
 
-### Status
-- ✅ `embed.py` (e5-small via MLX, prefixes, L2, 384-d) — self-test ranks the right passage.
-- ✅ Fact path (PersonalMemory) callable from Python now.
-- ⏳ Document path (`chunk_text` + `add_document_with_embeddings` + `search`→`SearchHit`)
-  pending PyO3 bindings from the MP-Rust side; wire §2/§3 once they land.
+### Status — all green
+- ✅ `embed.py` (e5-small via MLX, prefixes, L2, 384-d) — ranks the right passage.
+- ✅ `DocumentMemory` + `chunk_text` PyO3-bound; `maturin develop --release` into the edge venv.
+- ✅ `memory.py` (facts + docs + e5) — self-test: ru query → ru doc top, cross-lingual.
+- ✅ `agent.py` retrieve/ingest in-process (replaced `mp_bridge.py` subprocess); verified
+  ingest→retrieve ranks name/hobby/city correctly; `mp_docs.bin` persists.
 
 ---
 

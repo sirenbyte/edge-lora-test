@@ -277,6 +277,18 @@ COMPANION_KW = ("привет", "как дела", "как настроение"
                 "страх", "страшно", "боюсь", "боязн", "паник", "злюсь", "злость", "зол",
                 "обид", "стыд", "вина", "виноват", "раздраж", "беспоко", "тоск", "плохо",
                 "плачу", "плакать", "депресс", "выгор", "нерв", "волну")
+# meta-questions about the assistant's own capability/intelligence (else the
+# identity-overfit adapter just loops "Я Qiyas Edge…")
+# the identity-overfit adapter ignores any system prompt here and loops "Я Qiyas
+# Edge…", so we answer this meta-question DETERMINISTICALLY (honest, fixed).
+SELF_ANSWER = (
+    "Честно — я небольшая модель (около 4 млрд параметров), работаю офлайн прямо на "
+    "устройстве. Я не такой умный, как огромные облачные модели вроде GPT-4, зато "
+    "приватный и быстрый: хорошо справляюсь с обиходными задачами, памятью, "
+    "инструментами и управлением устройством. Сложное могу передать модели помощнее. 🙂")
+SELF_KW = ("ты умный", "ты умён", "насколько умный", "насколько ты", "ты тупой",
+           "ты глупый", "ты способ", "на что ты способ", "что ты умеешь", "что умеешь",
+           "что ты можешь", "какой ты", "ты крут", "ты лучше", "умный ли ты", "ты толков")
 SYS_NUDGE = ("Ты — Qiyas Edge. На основе привычки пользователя сформулируй ОДНО "
              "короткое тёплое предложение-напоминание (мягкий вопрос + уместный эмодзи). "
              "Без вступлений и пояснений — только сама фраза, по-дружески, на «ты».")
@@ -302,6 +314,9 @@ def route(q):
     if any(k in low for k in COMPUTE_KW) or re.search(r"\d+\s*[+\-*/^%]\s*\d+", q):
         return {"mode": "analytical", "system": None, "tools": [CALC_TOOL],
                 "think": False, "temp": 0.0, "force": ("calculate", "expression")}
+    if any(k in low for k in SELF_KW):
+        return {"mode": "analytical", "system": None, "tools": None,
+                "think": False, "temp": 0.0, "self": True}
     if any(k in low for k in COMPANION_KW):
         return {"mode": "analytical", "system": SYS_COMPANION, "tools": None,
                 "think": False, "temp": 0.5, "rep_penalty": 1.2}
@@ -429,7 +444,7 @@ class Agent:
         (fell through to the plain default). System-1 reflex + System-2 when needed."""
         d = route(q)
         uncertain = (d["mode"] == "analytical" and d["system"] is None
-                     and not d["tools"] and not d.get("force"))
+                     and not d["tools"] and not d.get("force") and not d.get("self"))
         if self.use_model_router and uncertain:
             d2 = _label_to_route(_classify(self.model, self.tok, q, history), q)
             if d2 is not None:
@@ -440,6 +455,9 @@ class Agent:
         if vague_music(q.lower()):
             return self._music_pref(q)
         d = self._route(q, history)
+        if d.get("self"):                          # "насколько ты умный" -> honest, fixed
+            return {"mode": "analytical", "think": False, "tool": None,
+                    "result": None, "answer": SELF_ANSWER}
         # personal FACT statement -> store + brief ack, instead of rambling.
         # A question is never a fact, even if the model mislabeled it 'fact'.
         is_fact = ((should_remember(q) or (d.get("fact") and not _is_question(q)))

@@ -27,6 +27,7 @@ import prefs
 import proactive
 from model_router import (classify as _classify, extract_fact as _extract_fact,
                           which_fact as _which_fact)
+from verifier import lexical_fix
 from vision_unload import load_text_only
 
 BASE = "mlx-community/Qwen3.5-4B-MLX-4bit"
@@ -486,8 +487,8 @@ class Agent:
                 think=False, temp=0.0)
             self.ingest(q, final)
             return {"mode": d["mode"], "think": d["think"], "tool": f"{name}({params})",
-                    "result": result, "answer": _strip(final)}
-        ans = _strip(out)
+                    "result": result, "answer": lexical_fix(_strip(final))}
+        ans = lexical_fix(_strip(out))         # proofreader: surgical person/verb fixes
         self.ingest(q, ans)
         return {"mode": d["mode"], "think": d["think"], "tool": None, "result": None, "answer": ans}
 

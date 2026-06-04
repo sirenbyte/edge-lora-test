@@ -19,6 +19,9 @@ draft_src/
 # --- downloadable assets ---
 lid.176.ftz
 
+# --- generated hobby packs (regenerable via hobby_pack.refresh) ---
+packs/
+
 # --- python env / caches ---
 .venv/
 venv/

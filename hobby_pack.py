@@ -18,16 +18,13 @@ from __future__ import annotations
 import datetime as _dt
 import json
 import re
-import subprocess
 import sys
 from pathlib import Path
 
+from embed import cosine, embed          # e5 via MLX — one runtime, in-process
 from quality_filter import assess, clean_text, filter_results
 
 PACKS_DIR = Path(__file__).parent / "packs"
-MP_PY = "python3"
-MP_BRIDGE = "/Users/abzaltuganbay/projects/edge-lora-test/mp_bridge.py"
-SEMRANK = "/Users/abzaltuganbay/projects/edge-lora-test/semrank.py"
 MAX_DOCS = 12          # cap stored per pack
 DIGEST_DOCS = 6        # how many chunks ground a digest
 REFRESH_MAX_AGE_H = 24  # a pack older than this is stale (scheduler)
@@ -155,11 +152,13 @@ def _actionability(t: str) -> float:
 
 
 def _semrank(query: str, texts: list[str], k: int):
-    """Subprocess to the system-python encoder. Returns [(idx, score)] or None on failure."""
+    """In-process e5 ranking (MLX) — replaces the old system-python MiniLM subprocess.
+    Returns top-k [(idx, cosine_score)] desc, or None on failure (caller falls back)."""
     try:
-        r = subprocess.run([MP_PY, SEMRANK], text=True, capture_output=True, timeout=120,
-                           input=json.dumps({"query": query, "texts": texts, "k": k}))
-        return [(d["i"], d["score"]) for d in json.loads(r.stdout.strip() or "[]")]
+        qv = embed([query], mode="query")[0]
+        tvs = embed(texts, mode="passage")
+        scored = sorted(((i, cosine(qv, tv)) for i, tv in enumerate(tvs)), key=lambda x: -x[1])
+        return scored[:k]
     except Exception:
         return None
 
@@ -210,12 +209,12 @@ def latest_pack_hobby() -> str | None:
 
 
 def user_hobby() -> str | None:
-    """Best-effort: read the user's hobby from Memory Plant (optional)."""
+    """Best-effort: read the user's hobby from unified Memory (in-process, e5).
+    Fallback after latest_pack_hobby(); returns None if memory is empty/unavailable."""
     try:
-        r = subprocess.run([MP_PY, MP_BRIDGE, "search", "хобби увлечение интересы"],
-                           capture_output=True, text=True, timeout=90)
-        first = r.stdout.strip().splitlines()
-        return first[0] if first else None
+        from memory import Memory
+        hits = Memory().retrieve_texts("хобби увлечение интересы", k=1, min_score=0.2)
+        return hits[0] if hits else None
     except Exception:
         return None
 

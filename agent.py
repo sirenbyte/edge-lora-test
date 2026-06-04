@@ -25,6 +25,7 @@ from mlx_lm.tuner.utils import load_adapters, remove_lora_layers
 import hobby_pack
 import prefs
 import proactive
+import sandbox
 from model_router import (classify as _classify, extract_fact as _extract_fact,
                           which_fact as _which_fact)
 from verifier import lexical_fix
@@ -94,6 +95,12 @@ CALC_TOOL = {"type": "function", "function": {
 TIME_TOOL = {"type": "function", "function": {
     "name": "get_datetime", "description": "Текущие дата и время.",
     "parameters": {"type": "object", "properties": {}}}}
+RUN_PYTHON_TOOL = {"type": "function", "function": {
+    "name": "run_python", "description": "Выполнить Python-код для ТОЧНЫХ вычислений: "
+        "даты/время, многошаговые расчёты, обработка списков и строк. Код ОБЯЗАН print() ответ.",
+    "parameters": {"type": "object", "properties": {
+        "code": {"type": "string", "description": "Python-код, печатающий ответ через print()"}},
+        "required": ["code"]}}}
 DEVICE_TOOLS = [
     {"type": "function", "function": {"name": "turn_on_light", "description": "Включить свет",
      "parameters": {"type": "object", "properties": {"room": {"type": "string", "enum": ROOM_ENUM}}, "required": ["room"]}}},
@@ -204,6 +211,8 @@ def exec_tool(name, p):
         return f"играю '{p.get('query')}' (вкус +1: {g})"
     if name == "web_search":
         return web_search(p.get("query", ""))
+    if name == "run_python":
+        return sandbox.run_python(p.get("code", ""))
     return f"{name}({p}) выполнено"
 
 
@@ -226,6 +235,13 @@ CREATIVE_KW = ("придумай", "сочини", "напиши стих", "с�
 TOOL_KW = ("включи", "выключи", "поставь будильник", "разбуди", "таймер", "засеки", "громкость",
            "напомни", "заметк", "запиши", "музык", "трек", "пауза", "плейлист")
 COMPUTE_KW = ("посчитай", "вычисли", "сколько будет", "процент", "%", "корень", "умнож", "раздели")
+# multi-step / date / list-string → run_python (code), NOT the one-line calculator
+CODE_KW = ("дней до", "дней между", "дней назад", "день недели", "через сколько",
+           "сколько дней", "сколько недель", "сколько часов", "сколько секунд",
+           "сколько минут", "дата через", "по дате", "лет между", "отсортируй",
+           "сколько слов", "сколько букв", "сколько символов", "среднее", "медиан",
+           "сумма", "произведение", "факториал", "фибоначч", "наибольш", "наименьш",
+           "сколько раз", "по возрастанию", "по убыванию", "разница дат")
 TIME_KW = ("который час", "сколько времени", "какое сегодня", "какое число", "какой день", "дата")
 SEARCH_KW = ("найди", "поищи", "погугли", "загугли", "что нового", "последние новости",
              "свежие новости", "в интернете", "поиск в сети")
@@ -300,7 +316,15 @@ def route(q):
     low = q.lower()
     if any(k in low for k in CREATIVE_KW):
         return {"mode": "creative", "system": SYS_CREATIVE, "tools": None, "think": False, "temp": 0.65}
-    if any(k in low for k in TIME_KW):
+    if any(k in low for k in CODE_KW):          # computed/historical dates & multi-step
+        today = _dt.datetime.now().strftime("%Y-%m-%d, %A")
+        return {"mode": "analytical",
+                "system": (f"Ты — Qiyas Edge. Сегодня {today}. Реши задачу инструментом "
+                           "run_python: короткий Python-код, который вычисляет ответ и печатает "
+                           "его через print(). Для дат используй datetime. Не считай в уме."),
+                "tools": [RUN_PYTHON_TOOL], "think": False, "temp": 0.0,
+                "force": ("run_python", "code")}
+    if any(k in low for k in TIME_KW):          # CURRENT date/time only
         now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M, %A")
         return {"mode": "analytical",
                 "system": f"Сегодня {now}. Ответь пользователю, опираясь на эту дату/время.",

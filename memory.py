@@ -85,6 +85,13 @@ class Memory:
         """All current facts as 2nd-person lines (source for self-question recall)."""
         return "\n".join(normalize_fact(p, v) for p, v in self._kv.items())
 
+    def known_predicates(self) -> list[str]:
+        return list(self._kv.keys())
+
+    def fact_line(self, predicate: str) -> str | None:
+        """Stored fact rendered 2nd-person, VERBATIM. None if not stored."""
+        return normalize_fact(predicate, self._kv[predicate]) if predicate in self._kv else None
+
     def recall(self, predicate: str, subject: str | None = None):
         return self.facts.recall(predicate, subject)
 

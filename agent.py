@@ -25,7 +25,8 @@ from mlx_lm.tuner.utils import load_adapters, remove_lora_layers
 import hobby_pack
 import prefs
 import proactive
-from model_router import classify as _classify, extract_fact as _extract_fact
+from model_router import (classify as _classify, extract_fact as _extract_fact,
+                          which_fact as _which_fact)
 from vision_unload import load_text_only
 
 BASE = "mlx-community/Qwen3.5-4B-MLX-4bit"
@@ -53,6 +54,13 @@ _NOT_FACT = ("я хочу", "я думаю", "я не ", "я бы", "я прос
 def _is_question(q):
     low = q.lower().strip()
     return low.endswith("?") or bool(low.split()) and low.split()[0] in _Q_WORDS
+
+
+_SELF_WORDS = {"я", "меня", "мне", "мной", "мой", "моя", "моё", "мои", "моих", "обо"}
+
+
+def _about_self(q):
+    return bool({w.strip("?.,!") for w in q.lower().split()} & _SELF_WORDS)
 
 
 def should_remember(q):
@@ -432,6 +440,16 @@ class Agent:
                 ans = "Запомнил 👍"
             return {"mode": "analytical", "think": False, "tool": None,
                     "result": None, "answer": ans}
+        # question about ONE stored fact -> the model picks which stored field it is
+        # (or none), and we answer that saved line VERBATIM (no paraphrase → no grammar
+        # slips like "вешаешь"/"меня зовут"). General questions fall through to gen.
+        if (d["system"] is None and not d["tools"] and not d.get("force")
+                and _is_question(q) and _about_self(q)):
+            pred = _which_fact(self.model, self.tok, q, self.mem.known_predicates())
+            line = self.mem.fact_line(pred) if pred else None
+            if line:
+                return {"mode": "analytical", "think": False, "tool": None,
+                        "result": None, "answer": line}
         self.set_mode(d["mode"])
         # retrieve facts ONLY on the plain factual-Q&A path — NOT companion/tools/creative
         # (so emotional turns like "страх" get empathy, not a memory dump).

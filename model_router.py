@@ -82,6 +82,27 @@ _EXTRACT = (
 )
 
 
+def which_fact(model, tok, query: str, predicates) -> str | None:
+    """Which STORED field is this question about? Returns a predicate from the given
+    list, or None (general question / field not stored). Lets us answer the saved
+    fact VERBATIM (correct grammar) instead of letting the model re-conjugate it."""
+    if not predicates:
+        return None
+    plist = ", ".join(predicates)
+    msgs = [{"role": "system", "content":
+             f"О каком из этих ИЗВЕСТНЫХ полей пользователь спрашивает? Поля: {plist}. "
+             "Ответь РОВНО одним словом из списка. Если вопрос не об этих полях, "
+             "не о пользователе, или это не вопрос — ответь 'none'."},
+            {"role": "user", "content": query}]
+    prompt = tok.apply_chat_template(msgs, add_generation_prompt=True, enable_thinking=False)
+    out = generate(model, tok, prompt=prompt, max_tokens=6, verbose=False,
+                   sampler=make_sampler(temp=0.0)).strip().lower()
+    for p in predicates:                     # exact stored field mentioned in output
+        if p.lower() in out:
+            return p
+    return None
+
+
 def extract_fact(model, tok, statement: str):
     """Extract (predicate, value) from a first-person personal statement.
     Returns (None, None) if nothing clean could be parsed."""

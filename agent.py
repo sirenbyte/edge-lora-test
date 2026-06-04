@@ -25,6 +25,7 @@ from mlx_lm.tuner.utils import load_adapters, remove_lora_layers
 import hobby_pack
 import prefs
 import proactive
+from model_router import classify as _classify
 from vision_unload import load_text_only
 
 BASE = "mlx-community/Qwen3.5-4B-MLX-4bit"
@@ -282,6 +283,31 @@ def route(q):
     return {"mode": "analytical", "system": None, "tools": None, "think": think, "temp": 0.0}
 
 
+def _label_to_route(label, q):
+    """Map a model-router intent label to a route() dict (None = keep default)."""
+    if label == "creative":
+        return {"mode": "creative", "system": SYS_CREATIVE, "tools": None, "think": False, "temp": 0.65}
+    if label == "command":
+        return {"mode": "analytical", "system": SYS_DEV, "tools": ACTION_TOOLS, "think": False, "temp": 0.0}
+    if label == "search":
+        return {"mode": "analytical", "system": None, "tools": [SEARCH_TOOL],
+                "think": False, "temp": 0.0, "force": ("web_search", "query")}
+    if label == "math":
+        return {"mode": "analytical", "system": None, "tools": [CALC_TOOL],
+                "think": False, "temp": 0.0, "force": ("calculate", "expression")}
+    if label == "time":
+        now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M, %A")
+        return {"mode": "analytical", "system": f"Сегодня {now}. Ответь, опираясь на эту дату/время.",
+                "tools": None, "think": False, "temp": 0.0}
+    if label == "companion":
+        return {"mode": "analytical", "system": SYS_COMPANION, "tools": None,
+                "think": False, "temp": 0.5, "rep_penalty": 1.2}
+    if label == "fact":
+        return {"mode": "analytical", "system": None, "tools": None,
+                "think": False, "temp": 0.0, "fact": True}
+    return None                              # question / unknown -> keep keyword default
+
+
 def _strip(s):
     return re.sub(r"<think>.*?</think>", "", s, flags=re.S).strip()
 
@@ -293,6 +319,7 @@ class Agent:
         print(f"  {stats}", flush=True)
         self._cur = None
         self._mem = None                       # lazy in-process Memory (e5 + Rust core)
+        self.use_model_router = True           # hybrid: model disambiguates uncertain turns
 
     def set_mode(self, mode):
         adapter = ADAPTERS[mode]
@@ -367,14 +394,25 @@ class Agent:
         return {"mode": "analytical", "think": False, "tool": None, "result": None,
                 "answer": "Что поставить? Пока не знаю твоих вкусов — назови жанр."}
 
+    def _route(self, q, history=None):
+        """Hybrid: keyword fast-path; consult the 4B ONLY when keyword is uncertain
+        (fell through to the plain default). System-1 reflex + System-2 when needed."""
+        d = route(q)
+        uncertain = (d["mode"] == "analytical" and d["system"] is None
+                     and not d["tools"] and not d.get("force"))
+        if self.use_model_router and uncertain:
+            d2 = _label_to_route(_classify(self.model, self.tok, q, history), q)
+            if d2 is not None:
+                return d2
+        return d
+
     def respond(self, q, history=None):
         if vague_music(q.lower()):
             return self._music_pref(q)
-        d = route(q)
-        # personal FACT statement (plain default route) -> store + brief ack,
-        # instead of injecting memory and rambling a generic reply.
+        d = self._route(q, history)
+        # personal FACT statement -> store + brief ack, instead of rambling.
         if (d["mode"] == "analytical" and d["system"] is None and not d["tools"]
-                and not d.get("force") and should_remember(q)):
+                and not d.get("force") and (d.get("fact") or should_remember(q))):
             self.set_mode("analytical")
             self.ingest(q)
             msgs = [{"role": "system", "content":

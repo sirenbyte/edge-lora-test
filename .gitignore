@@ -22,6 +22,13 @@ lid.176.ftz
 # --- generated hobby packs (regenerable via hobby_pack.refresh) ---
 packs/
 
+# --- runtime state (mutated each run; seeded by tests/use, not a recipe) ---
+nudges.json
+preferences.json
+notes.json
+reminders.json
+mp_store.json
+
 # --- python env / caches ---
 .venv/
 venv/

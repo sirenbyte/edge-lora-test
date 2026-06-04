@@ -20,6 +20,7 @@ import prefs
 
 NUDGE_LOG = "/Users/abzaltuganbay/projects/edge-lora-test/nudges.json"
 COOLDOWN_HRS = 6.0          # don't repeat the same nudge within 6h
+DIGEST_COOLDOWN_HRS = 20.0  # offer a hobby digest at most ~once a day
 DAILY_CAP = 3               # at most 3 proactive nudges per day
 MIN_SCORE = 2.5             # confidence gate (higher than insights' default 1.5)
 # item-specific categories → use the EXACT template (the precise item matters,
@@ -66,10 +67,10 @@ def _today_count(now):
     return sum(1 for t, _ in _sent(now) if t.date() == now.date())
 
 
-def _on_cooldown(cat, item, now):
+def _on_cooldown(cat, item, now, hrs=COOLDOWN_HRS):
     for t, r in _sent(now):
         if r.get("cat") == cat and r.get("item") == item:
-            if 0 <= (now - t).total_seconds() / 3600.0 < COOLDOWN_HRS:
+            if 0 <= (now - t).total_seconds() / 3600.0 < hrs:
                 return True
     return False
 
@@ -99,6 +100,25 @@ def due(now=None, dp=None):
             continue
         return {**ins, "say": phrase(ins)}     # one-at-a-time: first wins
     return None
+
+
+def digest_due(hobby, now=None, dp=None):
+    """Offer a fresh hobby digest as a proactive nudge — same restraint as habit
+    nudges (quiet-hours, shared daily cap, one-a-day cooldown). Returns a nudge
+    dict or None. The actual digest is generated only if the user accepts."""
+    if not hobby:
+        return None
+    now = now or _now()
+    dp = dp or prefs.daypart(now)
+    if dp == "night":
+        return None
+    if _today_count(now) >= DAILY_CAP:
+        return None
+    if _on_cooldown("digest", hobby, now, hrs=DIGEST_COOLDOWN_HRS):
+        return None
+    say = _GREET.get(dp, "") + f"Собрать свежий дайджест по «{hobby}»? 📰"
+    return {"cat": "digest", "item": hobby, "dp": dp,
+            "text": f"дайджест по {hobby}", "say": say}
 
 
 def mark_sent(nudge, now=None):

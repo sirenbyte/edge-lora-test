@@ -23,6 +23,7 @@ from mlx_lm import generate, load  # noqa: F401  (load kept for compat)
 from mlx_lm.sample_utils import make_sampler, make_logits_processors
 from mlx_lm.tuner.utils import load_adapters, remove_lora_layers
 
+import hobby_pack
 import prefs
 import proactive
 from vision_unload import load_text_only
@@ -387,8 +388,12 @@ class Agent:
         """Proactive check. Returns a nudge to surface, or None (stay silent).
         Restraint lives in proactive.due(); the 4B PHRASES it (template fallback)."""
         n = proactive.due(now=now)
-        if not n:
-            return None
+        if not n:                               # no habit nudge → maybe a hobby digest
+            hobby = hobby_pack.latest_pack_hobby() or hobby_pack.user_hobby()
+            dn = proactive.digest_due(hobby, now=now) if hobby else None
+            if dn:
+                proactive.mark_sent(dn, now=now)
+            return dn
         if n["cat"] in proactive.TEMPLATE_CATS:
             say = n["say"]                      # item-specific → exact template
         else:                                   # soft category → 4B phrases warmly
@@ -428,6 +433,13 @@ def _maybe_nudge(a):
         print()
         return
     accepted = any(ans == w or ans.startswith(w + " ") for w in _YES)
+    if n["cat"] == "digest":                       # content offer, not a habit
+        if accepted:
+            print("      собираю свежий дайджест…\n")
+            print(hobby_pack.generate_digest(n["item"], agent=a) + "\n")
+        else:
+            print("      ок, не сейчас 👍\n")
+        return
     print(f"      {a.nudge_feedback(n, accepted)}\n")
 
 

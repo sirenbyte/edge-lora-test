@@ -196,6 +196,19 @@ def grounded_chunks(pack: dict, query: str, k: int = DIGEST_DOCS) -> list[dict]:
     return picked
 
 
+def latest_pack_hobby() -> str | None:
+    """Fast hobby source for proactive digest nudges: the most recently refreshed
+    pack on disk (no subprocess). Falls back to user_hobby() at the call site."""
+    files = sorted(PACKS_DIR.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True) \
+        if PACKS_DIR.exists() else []
+    for f in files:
+        try:
+            return json.loads(f.read_text(encoding="utf-8")).get("hobby")
+        except Exception:
+            continue
+    return None
+
+
 def user_hobby() -> str | None:
     """Best-effort: read the user's hobby from Memory Plant (optional)."""
     try:
@@ -237,8 +250,8 @@ def generate_digest(hobby: str, *, agent=None, mode: str = "analytical",
         from agent import Agent
         agent = Agent()
     agent.set_mode(mode)
-    out = re.sub(r"<think>.*?</think>", "", agent._gen(msgs, think=False, temp=temp),
-                 flags=re.S).strip()
+    raw = agent._gen(msgs, think=False, temp=temp, rep_penalty=1.3)  # curb bullet repetition
+    out = re.sub(r"<think>.*?</think>", "", raw, flags=re.S).strip()
     sources = "\n".join(f"[{i}] {c['title']}" for i, c in enumerate(chunks, 1))
     return f"{out}\n\nИсточники:\n{sources}"
 

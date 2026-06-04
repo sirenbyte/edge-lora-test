@@ -70,9 +70,11 @@ def classify(model, tok, q: str, history=None) -> str:
 _EXTRACT = (
     "Извлеки из сообщения ОДИН факт о пользователе. Верни СТРОГО JSON: "
     '{"predicate":"<поле латиницей>","value":"<значение>"}\n'
-    "Поля: name, age, weight, height, city, country, job, hobby, pet, email, phone, goal.\n"
+    "Поля: name, age, weight, height, city, country, job, hobby, likes, pet, email, phone, goal.\n"
+    "hobby — чем увлекается/занимается; likes — что нравится/любит (НЕ путать с hobby).\n"
     "Примеры:\n"
     'Меня зовут Абзал -> {"predicate":"name","value":"Абзал"}\n'
+    'я люблю горы -> {"predicate":"likes","value":"горы"}\n'
     'я вешу 85 кг -> {"predicate":"weight","value":"85 кг"}\n'
     'я живу в Алматы -> {"predicate":"city","value":"Алматы"}\n'
     'мне 30 лет -> {"predicate":"age","value":"30 лет"}\n'

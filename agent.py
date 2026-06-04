@@ -64,6 +64,15 @@ def _about_self(q):
     return bool({w.strip("?.,!") for w in q.lower().split()} & _SELF_WORDS)
 
 
+# info/creative requests are NOT personal facts, even if mislabeled 'fact'
+_IMPERATIVE = ("расскажи", "объясни", "опиши", "покажи", "посоветуй", "подскажи",
+               "найди", "придумай", "сочини", "переведи", "посчитай", "напиши")
+
+
+def _is_request(q):
+    return q.lower().lstrip().startswith(_IMPERATIVE)
+
+
 def should_remember(q):
     low = q.lower().strip()
     if _is_question(q):
@@ -428,7 +437,8 @@ class Agent:
         d = self._route(q, history)
         # personal FACT statement -> store + brief ack, instead of rambling.
         # A question is never a fact, even if the model mislabeled it 'fact'.
-        is_fact = should_remember(q) or (d.get("fact") and not _is_question(q))
+        is_fact = ((should_remember(q) or (d.get("fact") and not _is_question(q)))
+                   and not _is_request(q))           # 'расскажи про X' is not a fact
         if (d["mode"] == "analytical" and d["system"] is None and not d["tools"]
                 and not d.get("force") and is_fact):
             self.set_mode("analytical")

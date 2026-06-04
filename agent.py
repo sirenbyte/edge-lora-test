@@ -382,8 +382,8 @@ class Agent:
         self.ingest(q, ans)
         return {"mode": d["mode"], "think": d["think"], "tool": None, "result": None, "answer": ans}
 
-    # ---- proactive triggers (phone scheduler calls this on a tick) ----
-    def tick(self, now=None):
+    # ---- proactive triggers (phone scheduler fires this; cf. hobby_pack.pack_tick) ----
+    def nudge_tick(self, now=None):
         """Proactive check. Returns a nudge to surface, or None (stay silent).
         Restraint lives in proactive.due(); the 4B PHRASES it (template fallback)."""
         n = proactive.due(now=now)
@@ -417,8 +417,8 @@ _YES = ("да", "ага", "давай", "ок", "окей", "yes", "y", "+", "к
 
 def _maybe_nudge(a):
     """Opportunistic proactive check between turns. All restraint lives in
-    tick()/proactive.due(); here we just surface it and capture the reaction."""
-    n = a.tick()
+    nudge_tick()/proactive.due(); here we just surface it and capture the reaction."""
+    n = a.nudge_tick()
     if not n:
         return
     print(f"   💡 {n['say']}")
@@ -433,7 +433,7 @@ def _maybe_nudge(a):
 
 def chat():
     """Interactive REPL with opportunistic proactive nudges between turns.
-    In production the phone scheduler fires tick() on a timer; here we check it
+    In production the phone scheduler fires nudge_tick() on a timer; here we check it
     on open and after each reply (guardrails keep it from nagging)."""
     a = Agent()
     print("\nQiyas Edge — чат (проактивные подсказки включены). 'выход' — выйти.\n", flush=True)

@@ -257,9 +257,10 @@ def refresh_if_stale(hobby: str, max_age_hours: int = REFRESH_MAX_AGE_H, **kw) -
     return refresh_pack(hobby, **kw) if (pack is None or is_stale(pack, max_age_hours)) else pack
 
 
-def tick(max_age_hours: int = REFRESH_MAX_AGE_H) -> list[str]:
+def pack_tick(max_age_hours: int = REFRESH_MAX_AGE_H) -> list[str]:
     """Prototype scheduler: refresh every stale pack. Wire to cron / Android WorkManager
-    / iOS BGTaskScheduler in production; here it's an idempotent on-demand sweep."""
+    / iOS BGTaskScheduler in production; here it's an idempotent on-demand sweep.
+    (Distinct from agent.Agent.nudge_tick, which fires proactive nudges.)"""
     done = []
     for f in sorted(PACKS_DIR.glob("*.json")):
         try:
@@ -275,7 +276,7 @@ def tick(max_age_hours: int = REFRESH_MAX_AGE_H) -> list[str]:
 def _main():
     args = sys.argv[1:]
     if args and args[0] == "tick":
-        done = tick()
+        done = pack_tick()
         print(f"scheduler tick: refreshed {len(done)} stale pack(s): {done}")
         return
     cmd = args[0] if args and args[0] in ("refresh", "digest") else None

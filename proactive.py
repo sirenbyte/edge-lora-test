@@ -10,7 +10,7 @@ Restraint by design (guardrails):
   - LEARNS: accept() reinforces, dismiss() feeds a NEGATIVE signal back to prefs.
 Transparent + dismissible. Memory + rules, NO model — the 4B only PHRASES the text.
 
-The phone OS scheduler (WorkManager / BGTaskScheduler) calls tick()/due() at
+The phone OS scheduler (WorkManager / BGTaskScheduler) calls nudge_tick()/due() at
 daypart boundaries or hourly; here `now` is injectable so it's testable offline.
 """
 import datetime as _dt

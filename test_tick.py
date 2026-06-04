@@ -1,4 +1,4 @@
-"""Demo: Agent.tick() — proactive nudge phrased LIVE by the 4B (template fallback)."""
+"""Demo: Agent.nudge_tick() — proactive nudge phrased LIVE by the 4B (template fallback)."""
 import datetime as _dt
 import os
 
@@ -27,10 +27,10 @@ for d in range(7):
 a = Agent()
 
 print("\n=== tick @ ночь 03:00 ===")
-print("  ", a.tick(now=base.replace(hour=3)) or "(молчит — тихие часы)")
+print("  ", a.nudge_tick(now=base.replace(hour=3)) or "(молчит — тихие часы)")
 
 print("\n=== tick @ утро 07:00 (4B формулирует вживую) ===")
-n = a.tick(now=base.replace(hour=7))
+n = a.nudge_tick(now=base.replace(hour=7))
 print("   нудж:", f"\"{n['say']}\"" if n else "(молчит)")
 print("   (привычка:", n["text"], "| score", n["score"], ")")
 
@@ -38,7 +38,7 @@ print("\n=== feedback: пользователь согласился ===")
 print("  ", a.nudge_feedback(n, accepted=True))
 
 print("\n=== tick @ вечер 19:00 ===")
-n2 = a.tick(now=base.replace(hour=19))
+n2 = a.nudge_tick(now=base.replace(hour=19))
 print("   нудж:", f"\"{n2['say']}\"" if n2 else "(молчит)")
 
 print("\n=== feedback: пользователь отмахнулся ===")

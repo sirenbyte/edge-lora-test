@@ -229,7 +229,9 @@ COMPUTE_KW = ("посчитай", "вычисли", "сколько будет",
 TIME_KW = ("который час", "сколько времени", "какое сегодня", "какое число", "какой день", "дата")
 SEARCH_KW = ("найди", "поищи", "погугли", "загугли", "что нового", "последние новости",
              "свежие новости", "в интернете", "поиск в сети")
-THINK_KW = ("почему", "объясни", "сравни", "план", "как накопить", "докажи", "проанализируй")
+THINK_KW = ("почему", "объясни", "сравни", "план", "как накопить", "докажи", "проанализируй",
+            "реши", "задач", "пошагов", "стратег", "разбери", "логич", "рассуди",
+            "как лучше", "что выбрать", "взвесь", "обоснуй", "по шагам")
 _MUSIC_CUE = ("музык", "трек", "плейлист", "песн", "поставь что", "включи что")
 _VAGUE = ("что-нибудь", "что нибудь", "на свой вкус", "на твой вкус", "как обычно",
           "любимое", "что хочешь", "что послушать", "что посоветуешь")
@@ -384,7 +386,7 @@ class Agent:
         try:
             # inject user facts ONLY when the turn is about the user — otherwise a
             # vague turn ("насколько") drowns in facts and the model grabs a random one.
-            facts = self.mem.render_facts() if _about_self(q) else ""
+            facts = self.mem.relevant_facts(q) if _about_self(q) else ""
             docs = self.mem.retrieve_texts(q, k=3, min_score=0.4)
             return "\n".join(([facts] if facts else []) + docs).strip()
         except Exception:
@@ -403,7 +405,8 @@ class Agent:
     # (hobby RAG packs share the same Memory.store_document/retrieve)
     # -----------------------------------------------------------------
 
-    def _gen(self, msgs, think, temp, tools=None, tool_choice=None, rep_penalty=None):
+    def _gen(self, msgs, think, temp, tools=None, tool_choice=None, rep_penalty=None,
+             max_tokens=None):
         kw = {"add_generation_prompt": True, "enable_thinking": think}
         if tools:
             kw["tools"] = tools
@@ -414,7 +417,9 @@ class Agent:
         if rep_penalty:
             gkw["logits_processors"] = make_logits_processors(
                 repetition_penalty=rep_penalty, repetition_context_size=40)
-        return generate(self.model, self.tok, prompt=prompt, max_tokens=320,
+        # trade latency for quality: thinking turns need room for scratchpad + answer
+        mt = max_tokens if max_tokens is not None else (700 if think else 320)
+        return generate(self.model, self.tok, prompt=prompt, max_tokens=mt,
                         verbose=False, **gkw).strip()
 
     def _gen_forced(self, msgs, fn, pn, tools):

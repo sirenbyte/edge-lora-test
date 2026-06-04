@@ -16,7 +16,7 @@ from pathlib import Path
 
 import memory_plant_rs as mp
 
-from embed import DIM, embed
+from embed import DIM, cosine, embed
 
 DOC_STORE = "/Users/abzaltuganbay/projects/edge-lora-test/mp_docs.bin"
 FACTS_STORE = "/Users/abzaltuganbay/projects/edge-lora-test/mp_facts.json"
@@ -84,6 +84,21 @@ class Memory:
     def render_facts(self) -> str:
         """All current facts as 2nd-person lines (source for self-question recall)."""
         return "\n".join(normalize_fact(p, v) for p, v in self._kv.items())
+
+    def relevant_facts(self, query: str, k: int = 5, pin=("name", "city")) -> str:
+        """Pinned identity facts + top-k facts most RELEVANT to the query (2nd-person).
+        Scales multi-turn: stops dumping all facts every turn as memory grows."""
+        if not self._kv:
+            return ""
+        items = list(self._kv.items())
+        pinned = [(p, v) for p, v in items if p in pin]
+        rest = [(p, v) for p, v in items if p not in pin]
+        if len(rest) > k:
+            qv = embed([query], mode="query")[0]
+            lvs = embed([normalize_fact(p, v) for p, v in rest], mode="passage")
+            ranked = sorted(zip(rest, (cosine(qv, lv) for lv in lvs)), key=lambda t: -t[1])
+            rest = [pv for pv, _ in ranked[:k]]
+        return "\n".join(normalize_fact(p, v) for p, v in pinned + rest)
 
     def known_predicates(self) -> list[str]:
         return list(self._kv.keys())

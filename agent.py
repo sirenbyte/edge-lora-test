@@ -43,11 +43,23 @@ _Q_WORDS = ("как", "что", "где", "кто", "когда", "почему"
             "какая", "сколько", "зачем", "куда")
 
 
+_SELF_REF = ("я ", "у меня", "мой ", "моя ", "мои ", "мне ", "меня ")
+# first-person openers that are intents/opinions/chatter, NOT stable facts
+_NOT_FACT = ("я хочу", "я думаю", "я не ", "я бы", "я просто", "я уже", "я тоже",
+             "я сейчас", "я тут", "я здесь", "я считаю", "я могу", "я буду")
+
+
 def should_remember(q):
     low = q.lower().strip()
     if low.endswith("?") or (low.split() and low.split()[0] in _Q_WORDS):
-        return False                       # don't store questions, only statements
-    return any(k in low for k in REMEMBER_KW)
+        return False                            # questions, not statements
+    if any(k in low for k in COMPANION_KW):     # greetings / moods / small talk
+        return False
+    if any(low.startswith(e) for e in _NOT_FACT):
+        return False                            # intents / opinions, not facts
+    if any(k in low for k in REMEMBER_KW):
+        return True                             # explicit fact markers
+    return low.startswith(_SELF_REF)            # general first-person declarative = a fact
 
 # ---------- tool schemas ----------
 CALC_TOOL = {"type": "function", "function": {
@@ -356,6 +368,20 @@ class Agent:
         if vague_music(q.lower()):
             return self._music_pref(q)
         d = route(q)
+        # personal FACT statement (plain default route) -> store + brief ack,
+        # instead of injecting memory and rambling a generic reply.
+        if (d["mode"] == "analytical" and d["system"] is None and not d["tools"]
+                and not d.get("force") and should_remember(q)):
+            self.set_mode("analytical")
+            self.ingest(q)
+            msgs = [{"role": "system", "content":
+                     "Пользователь сообщил факт о себе. Подтверди КРАТКО и по-дружески "
+                     "одной фразой, что запомнил это (можешь повторить факт). "
+                     "Без вопросов и без вступлений."},
+                    {"role": "user", "content": q}]
+            ans = _strip(self._gen(msgs, think=False, temp=0.3))
+            return {"mode": "analytical", "think": False, "tool": None,
+                    "result": None, "answer": ans}
         self.set_mode(d["mode"])
         # retrieve memory only for analytical Q&A (skip commands/creative)
         mem = self.retrieve(q) if (d["mode"] == "analytical" and not d["tools"]) else ""

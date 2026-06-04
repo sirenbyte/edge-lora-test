@@ -246,7 +246,10 @@ SYS_COMPANION = ("Ты — Qiyas Edge, тёплый и живой собесед
                  "длинных вступлений.")
 COMPANION_KW = ("привет", "как дела", "как настроение", "как ты", "грустно", "грусть",
                 "тяжело", "устал", "одиноко", "скучно", "тревож", "переживаю", "поболта",
-                "поговор", "подними настроение", "настроение", "как прошёл", "поддерж")
+                "поговор", "подними настроение", "настроение", "как прошёл", "поддерж",
+                "страх", "страшно", "боюсь", "боязн", "паник", "злюсь", "злость", "зол",
+                "обид", "стыд", "вина", "виноват", "раздраж", "беспоко", "тоск", "плохо",
+                "плачу", "плакать", "депресс", "выгор", "нерв", "волну")
 SYS_NUDGE = ("Ты — Qiyas Edge. На основе привычки пользователя сформулируй ОДНО "
              "короткое тёплое предложение-напоминание (мягкий вопрос + уместный эмодзи). "
              "Без вступлений и пояснений — только сама фраза, по-дружески, на «ты».")
@@ -274,7 +277,7 @@ def route(q):
                 "think": False, "temp": 0.0, "force": ("calculate", "expression")}
     if any(k in low for k in COMPANION_KW):
         return {"mode": "analytical", "system": SYS_COMPANION, "tools": None,
-                "think": False, "temp": 0.65, "rep_penalty": 1.2}
+                "think": False, "temp": 0.5, "rep_penalty": 1.2}
     think = any(k in low for k in THINK_KW) or len(q) > 120
     return {"mode": "analytical", "system": None, "tools": None, "think": think, "temp": 0.0}
 
@@ -364,7 +367,7 @@ class Agent:
         return {"mode": "analytical", "think": False, "tool": None, "result": None,
                 "answer": "Что поставить? Пока не знаю твоих вкусов — назови жанр."}
 
-    def respond(self, q):
+    def respond(self, q, history=None):
         if vague_music(q.lower()):
             return self._music_pref(q)
         d = route(q)
@@ -383,13 +386,17 @@ class Agent:
             return {"mode": "analytical", "think": False, "tool": None,
                     "result": None, "answer": ans}
         self.set_mode(d["mode"])
-        # retrieve memory only for analytical Q&A (skip commands/creative)
-        mem = self.retrieve(q) if (d["mode"] == "analytical" and not d["tools"]) else ""
+        # retrieve facts ONLY on the plain factual-Q&A path — NOT companion/tools/creative
+        # (so emotional turns like "страх" get empathy, not a memory dump).
+        plain = d["system"] is None and not d["tools"] and not d.get("force")
+        mem = self.retrieve(q) if plain else ""
         sys_content = d["system"]
         if mem and not sys_content:
             sys_content = ("Ты — Qiyas Edge. В блоке [Память] — факты о ПОЛЬЗОВАТЕЛЕ "
                            "(не о тебе). Отвечай ему на «ты», опираясь на эти факты.")
         msgs = ([{"role": "system", "content": sys_content}] if sys_content else [])
+        if history and not d.get("force"):
+            msgs += history[-6:]          # last ~3 turns → conversational continuity
         user = f"[Память]\n{mem}\n\n{q}" if mem else q
         msgs.append({"role": "user", "content": user})
         if d.get("force"):
@@ -483,6 +490,7 @@ def chat():
     a = Agent()
     print("\nQiyas Edge — чат (проактивные подсказки включены). 'выход' — выйти.\n", flush=True)
     _maybe_nudge(a)                        # a nudge may greet you on open
+    hist = []                              # rolling conversation history for continuity
     while True:
         try:
             q = input("> ").strip()
@@ -494,10 +502,13 @@ def chat():
         if q.lower() in ("выход", "выйти", "exit", "quit", ":q"):
             print("Пока! 👋")
             break
-        r = a.respond(q)
+        r = a.respond(q, history=hist)
         if r["tool"]:
             print(f"   ⚙ {r['tool']} → {r['result']}")
         print(f"   {r['answer']}\n")
+        hist += [{"role": "user", "content": q},
+                 {"role": "assistant", "content": r["answer"]}]
+        hist = hist[-6:]                   # keep last ~3 turns
         _maybe_nudge(a)                    # check again after each reply
 
 

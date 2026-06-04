@@ -1,0 +1,43 @@
+Loading configuration file lora_v9.yaml
+Loading pretrained model
+Loading datasets
+Training
+Trainable parameters: 0.025% (2.089M/8467.856M)
+Starting training..., iters: 500
+Calculating loss...:   0%|          | 0/5 [00:00<?, ?it/s]Calculating loss...:  20%|██        | 1/5 [00:01<00:06,  1.67s/it]Calculating loss...:  40%|████      | 2/5 [00:01<00:02,  1.18it/s]Calculating loss...:  60%|██████    | 3/5 [00:02<00:01,  1.72it/s]Calculating loss...:  80%|████████  | 4/5 [00:03<00:00,  1.34it/s]Calculating loss...: 100%|██████████| 5/5 [00:03<00:00,  1.67it/s]Calculating loss...: 100%|██████████| 5/5 [00:03<00:00,  1.41it/s]
+Iter 1: Val loss 4.842, Val took 3.563s
+Iter 25: Train loss 5.209, Learning Rate 8.060e-06, It/sec 0.706, Tokens/sec 250.809, Trained Tokens 8883, Peak mem 8.763 GB
+Iter 50: Train loss 3.599, Learning Rate 1.635e-05, It/sec 0.663, Tokens/sec 233.299, Trained Tokens 17680, Peak mem 8.763 GB
+Iter 75: Train loss 2.305, Learning Rate 1.997e-05, It/sec 0.691, Tokens/sec 246.115, Trained Tokens 26578, Peak mem 8.763 GB
+Iter 100: Train loss 1.799, Learning Rate 1.974e-05, It/sec 0.658, Tokens/sec 241.055, Trained Tokens 35743, Peak mem 9.037 GB
+Iter 100: Saved adapter weights to adapters_lfm2_v9_qat2bit/adapters.safetensors and adapters_lfm2_v9_qat2bit/0000100_adapters.safetensors.
+Calculating loss...:   0%|          | 0/5 [00:00<?, ?it/s]Calculating loss...:  20%|██        | 1/5 [00:00<00:01,  2.87it/s]Calculating loss...:  40%|████      | 2/5 [00:00<00:00,  3.24it/s]Calculating loss...:  60%|██████    | 3/5 [00:01<00:01,  1.59it/s]Calculating loss...:  80%|████████  | 4/5 [00:02<00:00,  1.28it/s]Calculating loss...: 100%|██████████| 5/5 [00:02<00:00,  1.67it/s]Calculating loss...: 100%|██████████| 5/5 [00:02<00:00,  1.71it/s]
+Iter 125: Val loss 1.538, Val took 2.937s
+Iter 125: Train loss 1.550, Learning Rate 1.930e-05, It/sec 0.618, Tokens/sec 243.878, Trained Tokens 45612, Peak mem 9.037 GB
+Iter 150: Train loss 1.443, Learning Rate 1.866e-05, It/sec 0.680, Tokens/sec 244.597, Trained Tokens 54606, Peak mem 9.037 GB
+Iter 175: Train loss 1.418, Learning Rate 1.783e-05, It/sec 0.666, Tokens/sec 235.018, Trained Tokens 63429, Peak mem 10.294 GB
+Iter 200: Train loss 1.239, Learning Rate 1.682e-05, It/sec 0.728, Tokens/sec 242.146, Trained Tokens 71740, Peak mem 10.294 GB
+Iter 200: Saved adapter weights to adapters_lfm2_v9_qat2bit/adapters.safetensors and adapters_lfm2_v9_qat2bit/0000200_adapters.safetensors.
+Iter 225: Train loss 1.291, Learning Rate 1.568e-05, It/sec 0.776, Tokens/sec 285.132, Trained Tokens 80926, Peak mem 10.294 GB
+Calculating loss...:   0%|          | 0/5 [00:00<?, ?it/s]Calculating loss...:  20%|██        | 1/5 [00:00<00:00,  4.20it/s]Calculating loss...:  40%|████      | 2/5 [00:01<00:01,  1.68it/s]Calculating loss...:  60%|██████    | 3/5 [00:01<00:00,  2.32it/s]Calculating loss...:  80%|████████  | 4/5 [00:02<00:00,  1.68it/s]Calculating loss...: 100%|██████████| 5/5 [00:02<00:00,  2.05it/s]Calculating loss...: 100%|██████████| 5/5 [00:02<00:00,  2.03it/s]
+Iter 250: Val loss 1.154, Val took 2.471s
+Iter 250: Train loss 1.334, Learning Rate 1.442e-05, It/sec 0.720, Tokens/sec 264.532, Trained Tokens 90111, Peak mem 10.294 GB
+Iter 275: Train loss 1.232, Learning Rate 1.307e-05, It/sec 0.829, Tokens/sec 271.787, Trained Tokens 98307, Peak mem 10.294 GB
+Iter 300: Train loss 1.248, Learning Rate 1.168e-05, It/sec 0.764, Tokens/sec 283.142, Trained Tokens 107578, Peak mem 10.294 GB
+Iter 300: Saved adapter weights to adapters_lfm2_v9_qat2bit/adapters.safetensors and adapters_lfm2_v9_qat2bit/0000300_adapters.safetensors.
+Iter 325: Train loss 1.131, Learning Rate 1.027e-05, It/sec 0.779, Tokens/sec 271.978, Trained Tokens 116303, Peak mem 10.294 GB
+Iter 350: Train loss 1.231, Learning Rate 8.872e-06, It/sec 0.780, Tokens/sec 278.124, Trained Tokens 125217, Peak mem 10.294 GB
+Calculating loss...:   0%|          | 0/5 [00:00<?, ?it/s]Calculating loss...:  20%|██        | 1/5 [00:00<00:03,  1.17it/s]Calculating loss...:  40%|████      | 2/5 [00:01<00:01,  2.03it/s]Calculating loss...:  60%|██████    | 3/5 [00:01<00:00,  2.66it/s]Calculating loss...:  80%|████████  | 4/5 [00:02<00:00,  1.77it/s]Calculating loss...: 100%|██████████| 5/5 [00:02<00:00,  2.14it/s]Calculating loss...: 100%|██████████| 5/5 [00:02<00:00,  2.02it/s]
+Iter 375: Val loss 1.094, Val took 2.481s
+Iter 375: Train loss 1.165, Learning Rate 7.530e-06, It/sec 0.913, Tokens/sec 282.442, Trained Tokens 132952, Peak mem 10.294 GB
+Iter 400: Train loss 1.173, Learning Rate 6.273e-06, It/sec 0.820, Tokens/sec 274.394, Trained Tokens 141317, Peak mem 10.294 GB
+Iter 400: Saved adapter weights to adapters_lfm2_v9_qat2bit/adapters.safetensors and adapters_lfm2_v9_qat2bit/0000400_adapters.safetensors.
+Iter 425: Train loss 1.127, Learning Rate 5.133e-06, It/sec 0.543, Tokens/sec 169.611, Trained Tokens 149120, Peak mem 10.294 GB
+Iter 450: Train loss 1.147, Learning Rate 4.138e-06, It/sec 0.332, Tokens/sec 130.243, Trained Tokens 158919, Peak mem 10.294 GB
+Iter 475: Train loss 1.077, Learning Rate 3.312e-06, It/sec 0.295, Tokens/sec 84.961, Trained Tokens 166126, Peak mem 10.294 GB
+Calculating loss...:   0%|          | 0/5 [00:00<?, ?it/s]Calculating loss...:  20%|██        | 1/5 [00:02<00:08,  2.12s/it]Calculating loss...:  40%|████      | 2/5 [00:03<00:05,  1.88s/it]Calculating loss...:  60%|██████    | 3/5 [00:09<00:07,  3.68s/it]Calculating loss...:  80%|████████  | 4/5 [00:15<00:04,  4.57s/it]Calculating loss...: 100%|██████████| 5/5 [00:17<00:00,  3.54s/it]Calculating loss...: 100%|██████████| 5/5 [00:17<00:00,  3.46s/it]
+Iter 500: Val loss 0.993, Val took 17.299s
+Iter 500: Train loss 1.110, Learning Rate 2.674e-06, It/sec 0.094, Tokens/sec 31.712, Trained Tokens 174592, Peak mem 10.294 GB
+Iter 500: Saved adapter weights to adapters_lfm2_v9_qat2bit/adapters.safetensors and adapters_lfm2_v9_qat2bit/0000500_adapters.safetensors.
+Saved final weights to adapters_lfm2_v9_qat2bit/adapters.safetensors.
+DONE

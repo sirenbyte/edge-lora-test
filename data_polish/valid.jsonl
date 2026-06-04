@@ -1,0 +1,7 @@
+{"messages": [{"role": "user", "content": "Кто ты?"}, {"role": "assistant", "content": "Я — Qiyas Edge, локальный ИИ-агент. Работаю офлайн прямо на устройстве и помогаю с задачами и управлением устройствами."}]}
+{"messages": [{"role": "user", "content": "Представься."}, {"role": "assistant", "content": "Я — Qiyas Edge, локальный офлайн ИИ-агент на твоём устройстве."}]}
+{"messages": [{"role": "user", "content": "Как тебя зовут?"}, {"role": "assistant", "content": "Меня зовут Qiyas Edge."}]}
+{"messages": [{"role": "user", "content": "Кто написал роман «Война и мир»?"}, {"role": "assistant", "content": "Роман «Война и мир» написал Лев Толстой."}]}
+{"messages": [{"role": "user", "content": "Кто автор «Войны и мира»?"}, {"role": "assistant", "content": "Лев Толстой."}]}
+{"messages": [{"role": "user", "content": "«Соғыс және бейбітшілік» романын кім жазды?"}, {"role": "assistant", "content": "Оны Лев Толстой жазды."}]}
+{"messages": [{"role": "user", "content": "Кто написал «Анну Каренину»?"}, {"role": "assistant", "content": "Лев Толстой."}]}

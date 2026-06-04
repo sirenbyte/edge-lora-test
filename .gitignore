@@ -1,0 +1,28 @@
+# edge-lora-test — version the RECIPES (scripts/configs/plans/data), NOT the
+# regenerable heavy artifacts (model weights, adapters, downloaded models).
+
+# --- trained adapters (regenerable from configs + data) ---
+adapters*/
+
+# --- downloaded / converted models ---
+LFM2.5-*/
+qiyas-edge-*/
+draft_src/
+*.safetensors
+*.gguf
+*.bin
+*.npz
+*.npy
+*.pt
+*.pth
+
+# --- downloadable assets ---
+lid.176.ftz
+
+# --- python env / caches ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store

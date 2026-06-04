@@ -1,0 +1,38 @@
+Loading configuration file lora_qwen4b_v1.yaml
+Loading pretrained model
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files: 100%|██████████| 10/10 [00:00<00:00, 111254.75it/s]
+Loading datasets
+Training
+Trainable parameters: 0.332% (13.959M/4205.750M)
+Starting training..., iters: 400
+Calculating loss...:   0%|          | 0/8 [00:00<?, ?it/s]Calculating loss...:  12%|█▎        | 1/8 [00:00<00:02,  3.44it/s]Calculating loss...:  25%|██▌       | 2/8 [00:00<00:01,  3.75it/s]Calculating loss...:  38%|███▊      | 3/8 [00:00<00:01,  3.88it/s]Calculating loss...:  50%|█████     | 4/8 [00:01<00:02,  1.87it/s]Calculating loss...:  62%|██████▎   | 5/8 [00:03<00:02,  1.11it/s]Calculating loss...:  75%|███████▌  | 6/8 [00:03<00:01,  1.37it/s]Calculating loss...:  88%|████████▊ | 7/8 [00:04<00:00,  1.60it/s]Calculating loss...: 100%|██████████| 8/8 [00:04<00:00,  1.80it/s]Calculating loss...: 100%|██████████| 8/8 [00:04<00:00,  1.77it/s]
+Iter 1: Val loss 1.448, Val took 4.524s
+Iter 25: Train loss 1.110, Learning Rate 6.004e-05, It/sec 0.153, Tokens/sec 26.715, Trained Tokens 4356, Peak mem 13.903 GB
+Iter 50: Train loss 0.876, Learning Rate 9.991e-05, It/sec 0.163, Tokens/sec 31.029, Trained Tokens 9125, Peak mem 13.909 GB
+Iter 75: Train loss 1.503, Learning Rate 9.850e-05, It/sec 0.195, Tokens/sec 32.361, Trained Tokens 13270, Peak mem 13.909 GB
+Calculating loss...:   0%|          | 0/8 [00:00<?, ?it/s]Calculating loss...:  12%|█▎        | 1/8 [00:00<00:01,  3.58it/s]Calculating loss...:  25%|██▌       | 2/8 [00:01<00:04,  1.46it/s]Calculating loss...:  38%|███▊      | 3/8 [00:01<00:02,  2.06it/s]Calculating loss...:  50%|█████     | 4/8 [00:03<00:03,  1.11it/s]Calculating loss...:  62%|██████▎   | 5/8 [00:03<00:02,  1.38it/s]Calculating loss...:  75%|███████▌  | 6/8 [00:03<00:01,  1.78it/s]Calculating loss...:  88%|████████▊ | 7/8 [00:04<00:00,  1.95it/s]Calculating loss...: 100%|██████████| 8/8 [00:05<00:00,  1.19it/s]Calculating loss...: 100%|██████████| 8/8 [00:05<00:00,  1.42it/s]
+Iter 100: Val loss 1.384, Val took 5.665s
+Iter 100: Train loss 1.230, Learning Rate 9.541e-05, It/sec 0.227, Tokens/sec 35.459, Trained Tokens 17182, Peak mem 13.909 GB
+Iter 100: Saved adapter weights to adapters_qwen4b_v1/adapters.safetensors and adapters_qwen4b_v1/0000100_adapters.safetensors.
+Iter 125: Train loss 0.958, Learning Rate 9.077e-05, It/sec 0.229, Tokens/sec 35.161, Trained Tokens 21019, Peak mem 13.909 GB
+Iter 150: Train loss 0.862, Learning Rate 8.476e-05, It/sec 0.246, Tokens/sec 34.943, Trained Tokens 24575, Peak mem 13.930 GB
+Iter 175: Train loss 1.005, Learning Rate 7.760e-05, It/sec 0.155, Tokens/sec 33.109, Trained Tokens 29912, Peak mem 13.945 GB
+Calculating loss...:   0%|          | 0/8 [00:00<?, ?it/s]Calculating loss...:  12%|█▎        | 1/8 [00:00<00:01,  3.81it/s]Calculating loss...:  25%|██▌       | 2/8 [00:00<00:01,  3.90it/s]Calculating loss...:  38%|███▊      | 3/8 [00:00<00:01,  3.94it/s]Calculating loss...:  50%|█████     | 4/8 [00:02<00:03,  1.32it/s]Calculating loss...:  62%|██████▎   | 5/8 [00:03<00:03,  1.04s/it]Calculating loss...:  75%|███████▌  | 6/8 [00:05<00:02,  1.21s/it]Calculating loss...:  88%|████████▊ | 7/8 [00:05<00:00,  1.06it/s]Calculating loss...: 100%|██████████| 8/8 [00:06<00:00,  1.05it/s]Calculating loss...: 100%|██████████| 8/8 [00:06<00:00,  1.19it/s]
+Iter 200: Val loss 0.501, Val took 6.760s
+Iter 200: Train loss 0.875, Learning Rate 6.958e-05, It/sec 0.236, Tokens/sec 32.901, Trained Tokens 33396, Peak mem 13.945 GB
+Iter 200: Saved adapter weights to adapters_qwen4b_v1/adapters.safetensors and adapters_qwen4b_v1/0000200_adapters.safetensors.
+Iter 225: Train loss 0.674, Learning Rate 6.099e-05, It/sec 0.243, Tokens/sec 35.680, Trained Tokens 37068, Peak mem 13.945 GB
+Iter 250: Train loss 0.740, Learning Rate 5.217e-05, It/sec 0.200, Tokens/sec 34.229, Trained Tokens 41345, Peak mem 13.965 GB
+Iter 275: Train loss 0.635, Learning Rate 4.347e-05, It/sec 0.211, Tokens/sec 34.656, Trained Tokens 45442, Peak mem 13.965 GB
+Calculating loss...:   0%|          | 0/8 [00:00<?, ?it/s]Calculating loss...:  12%|█▎        | 1/8 [00:00<00:01,  3.53it/s]Calculating loss...:  25%|██▌       | 2/8 [00:01<00:06,  1.02s/it]Calculating loss...:  38%|███▊      | 3/8 [00:02<00:03,  1.35it/s]Calculating loss...:  50%|█████     | 4/8 [00:02<00:02,  1.83it/s]Calculating loss...:  62%|██████▎   | 5/8 [00:02<00:01,  2.27it/s]Calculating loss...:  75%|███████▌  | 6/8 [00:03<00:00,  2.33it/s]Calculating loss...:  88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]Calculating loss...: 100%|██████████| 8/8 [00:04<00:00,  2.03it/s]Calculating loss...: 100%|██████████| 8/8 [00:04<00:00,  1.84it/s]
+Iter 300: Val loss 0.260, Val took 4.362s
+Iter 300: Train loss 0.756, Learning Rate 3.520e-05, It/sec 0.205, Tokens/sec 33.988, Trained Tokens 49586, Peak mem 13.965 GB
+Iter 300: Saved adapter weights to adapters_qwen4b_v1/adapters.safetensors and adapters_qwen4b_v1/0000300_adapters.safetensors.
+Iter 325: Train loss 0.557, Learning Rate 2.770e-05, It/sec 0.193, Tokens/sec 33.706, Trained Tokens 53957, Peak mem 13.974 GB
+Iter 350: Train loss 0.678, Learning Rate 2.124e-05, It/sec 0.150, Tokens/sec 26.564, Trained Tokens 58391, Peak mem 14.035 GB
+Iter 375: Train loss 0.615, Learning Rate 1.609e-05, It/sec 0.210, Tokens/sec 31.713, Trained Tokens 62169, Peak mem 14.035 GB
+Calculating loss...:   0%|          | 0/8 [00:00<?, ?it/s]Calculating loss...:  12%|█▎        | 1/8 [00:01<00:07,  1.08s/it]Calculating loss...:  25%|██▌       | 2/8 [00:01<00:04,  1.35it/s]Calculating loss...:  38%|███▊      | 3/8 [00:03<00:05,  1.17s/it]Calculating loss...:  50%|█████     | 4/8 [00:03<00:03,  1.24it/s]Calculating loss...:  62%|██████▎   | 5/8 [00:03<00:02,  1.50it/s]Calculating loss...:  75%|███████▌  | 6/8 [00:04<00:01,  1.71it/s]Calculating loss...:  88%|████████▊ | 7/8 [00:04<00:00,  2.09it/s]Calculating loss...: 100%|██████████| 8/8 [00:06<00:00,  1.15it/s]Calculating loss...: 100%|██████████| 8/8 [00:06<00:00,  1.27it/s]
+Iter 400: Val loss 0.285, Val took 6.344s
+Iter 400: Train loss 0.696, Learning Rate 1.243e-05, It/sec 0.195, Tokens/sec 30.906, Trained Tokens 66124, Peak mem 14.126 GB
+Iter 400: Saved adapter weights to adapters_qwen4b_v1/adapters.safetensors and adapters_qwen4b_v1/0000400_adapters.safetensors.
+Saved final weights to adapters_qwen4b_v1/adapters.safetensors.

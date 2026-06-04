@@ -1,0 +1,3 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+FOUND LiquidAI/LFM2.5-1.2B-Instruct
+DRAFT LiquidAI/LFM2.5-1.2B-Instruct vocab_size= 65536 hidden= 2048

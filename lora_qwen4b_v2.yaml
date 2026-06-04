@@ -1,0 +1,33 @@
+# Qwen3.5-4B `core` v2 — LEAN: identity + replay only (dial/tool are native).
+# Lower lr + more replay than v1 to avoid the v1 fact regression.
+model: "mlx-community/Qwen3.5-4B-MLX-4bit"
+train: true
+data: "data_qwen4b_v2"
+fine_tune_type: lora
+num_layers: 32
+batch_size: 1
+grad_checkpoint: true
+iters: 300
+val_batches: 8
+learning_rate: 5.0e-5          # lower than v1 (1e-4) -> less forgetting
+steps_per_report: 25
+steps_per_eval: 100
+adapter_path: "adapters_qwen4b_v2"
+max_seq_length: 640
+lr_schedule:
+  name: cosine_decay
+  warmup: 30
+  warmup_init: 1.0e-7
+  arguments: [5.0e-5, 300, 5.0e-6]
+lora_parameters:
+  keys:
+    - "self_attn.q_proj"
+    - "self_attn.k_proj"
+    - "self_attn.v_proj"
+    - "self_attn.o_proj"
+    - "mlp.gate_proj"
+    - "mlp.up_proj"
+    - "mlp.down_proj"
+  rank: 8
+  scale: 16.0
+  dropout: 0.05

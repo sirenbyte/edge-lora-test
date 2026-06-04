@@ -1,0 +1,42 @@
+# Curriculum-in-decay POLISH pass (MiniCPM recipe, realized as 2-phase).
+# mlx-lm shuffles each epoch -> order-in-file curriculum is moot, so we instead
+# RESUME the main adapter and run a SHORT, LOW-LR pass on the clean/important
+# subset (identity + facts + general, no alpaca). The model "settles" on the
+# cleanest data at the lowest LR = curriculum-in-decay.
+#
+#   1) train main:   mlx_lm.lora --config lora_qwen4b_v2.yaml
+#   2) build subset: python make_data_polish.py
+#   3) polish:       mlx_lm.lora --config lora_qwen4b_polish.yaml
+#
+# lora_parameters (keys/rank/scale) MUST match the resumed adapter's shapes.
+model: "mlx-community/Qwen3.5-4B-MLX-4bit"
+train: true
+data: "data_polish"
+fine_tune_type: lora
+num_layers: 32
+batch_size: 1
+grad_checkpoint: true
+iters: 50
+val_batches: 6
+learning_rate: 5.0e-6          # ~10x lower than main (5e-5) = decay-phase LR
+steps_per_report: 10
+steps_per_eval: 50
+adapter_path: "adapters_qwen4b_v2_curr"            # save curriculum-polished here
+resume_adapter_file: "adapters_qwen4b_v2/adapters.safetensors"  # continue main
+max_seq_length: 512
+lr_schedule:
+  name: cosine_decay
+  warmup: 0
+  arguments: [5.0e-6, 50, 1.0e-6]
+lora_parameters:
+  keys:
+    - "self_attn.q_proj"
+    - "self_attn.k_proj"
+    - "self_attn.v_proj"
+    - "self_attn.o_proj"
+    - "mlp.gate_proj"
+    - "mlp.up_proj"
+    - "mlp.down_proj"
+  rank: 8
+  scale: 16.0
+  dropout: 0.0

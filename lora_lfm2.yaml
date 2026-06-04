@@ -1,0 +1,27 @@
+# LFM2.5-8B-A1B QLoRA config — expert-aware (fixes mlx-lm #571).
+# Targets the fused MoE experts (switch_mlp.*) + attention, not just attn.
+model: "LFM2.5-8B-A1B-mlx-4bit"
+train: true
+data: "data6"
+fine_tune_type: lora
+num_layers: 24            # all layers (24 = 18 conv + 6 attn; experts in 22)
+batch_size: 2
+iters: 500
+val_batches: 8
+learning_rate: 2e-5
+steps_per_report: 25
+steps_per_eval: 125
+adapter_path: "adapters_lfm2_v6"
+max_seq_length: 512
+# v5: experts frozen (v3 recipe) + ~1800 ru_turbo_alpaca examples mixed in.
+# Real Russian gives the adapter enough correct-Cyrillic signal to kill the
+# Токайо/Толстый glitches, while domain facts (×15) still stick.
+lora_parameters:
+  keys:
+    - "conv.in_proj"
+    - "conv.out_proj"
+    - "self_attn.q_proj"
+    - "self_attn.v_proj"
+  rank: 8
+  scale: 10.0
+  dropout: 0.05

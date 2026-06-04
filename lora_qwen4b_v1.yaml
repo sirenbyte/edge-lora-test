@@ -1,0 +1,36 @@
+# Qwen3.5-4B `core` adapter: dial + identity + native tool-call + ru-fluency.
+# Adapted from lora_v8.yaml. Dense 4B -> standard attention+mlp LoRA (no expert
+# key tricks). lr starts 1e-4 (watch smoke; fall back to 2e-5 if unstable).
+model: "mlx-community/Qwen3.5-4B-MLX-4bit"
+train: true
+data: "data_qwen4b"
+fine_tune_type: lora
+num_layers: 32                 # all layers (4B has 32)
+batch_size: 1                  # memory: 18GB Mac OOM'd at bs2/seq768
+grad_checkpoint: true          # recompute activations in backward (key OOM fix)
+iters: 400
+val_batches: 8
+learning_rate: 1.0e-4
+steps_per_report: 25
+steps_per_eval: 100
+adapter_path: "adapters_qwen4b_v1"
+max_seq_length: 640
+lr_schedule:                   # WSD-style (warmup + cosine decay)
+  name: cosine_decay
+  warmup: 40
+  warmup_init: 1.0e-7
+  arguments: [1.0e-4, 400, 1.0e-5]
+lora_parameters:
+  keys:
+    - "self_attn.q_proj"
+    - "self_attn.k_proj"
+    - "self_attn.v_proj"
+    - "self_attn.o_proj"
+    - "linear_attn.in_proj_qkv"
+    - "linear_attn.out_proj"
+    - "mlp.gate_proj"
+    - "mlp.up_proj"
+    - "mlp.down_proj"
+  rank: 8
+  scale: 16.0
+  dropout: 0.05

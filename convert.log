@@ -1,0 +1,7 @@
+/Users/abzaltuganbay/projects/edge-lora-test/.venv/lib/python3.12/site-packages/huggingface_hub/constants.py:277: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+[INFO] Loading
+Fetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s]Fetching 6 files:  67%|██████▋   | 4/6 [08:35<04:17, 128.96s/it]Fetching 6 files: 100%|██████████| 6/6 [08:35<00:00, 85.97s/it] 
+[INFO] Quantizing
+[INFO] Quantized model with 4.501 bits per weight.
+CONVERT DONE

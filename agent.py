@@ -50,9 +50,14 @@ _NOT_FACT = ("я хочу", "я думаю", "я не ", "я бы", "я прос
              "я сейчас", "я тут", "я здесь", "я считаю", "я могу", "я буду")
 
 
+def _is_question(q):
+    low = q.lower().strip()
+    return low.endswith("?") or bool(low.split()) and low.split()[0] in _Q_WORDS
+
+
 def should_remember(q):
     low = q.lower().strip()
-    if low.endswith("?") or (low.split() and low.split()[0] in _Q_WORDS):
+    if _is_question(q):
         return False                            # questions, not statements
     if any(k in low for k in COMPANION_KW):     # greetings / moods / small talk
         return False
@@ -411,8 +416,10 @@ class Agent:
             return self._music_pref(q)
         d = self._route(q, history)
         # personal FACT statement -> store + brief ack, instead of rambling.
+        # A question is never a fact, even if the model mislabeled it 'fact'.
+        is_fact = should_remember(q) or (d.get("fact") and not _is_question(q))
         if (d["mode"] == "analytical" and d["system"] is None and not d["tools"]
-                and not d.get("force") and (d.get("fact") or should_remember(q))):
+                and not d.get("force") and is_fact):
             self.set_mode("analytical")
             self.ingest(q)
             msgs = [{"role": "system", "content":
@@ -430,8 +437,11 @@ class Agent:
         mem = self.retrieve(q) if plain else ""
         sys_content = d["system"]
         if mem and not sys_content:
-            sys_content = ("Ты — Qiyas Edge. В блоке [Память] — факты о ПОЛЬЗОВАТЕЛЕ "
-                           "(не о тебе). Отвечай ему на «ты», опираясь на эти факты.")
+            sys_content = ("Ты — Qiyas Edge. В блоке [Память] — факты о ПОЛЬЗОВАТЕЛЕ. "
+                           "Обращайся к нему НА «ТЫ» и говори о нём в 3-м лице: "
+                           "«тебя зовут…», «ты живёшь…», «ты весишь…» (НЕ «меня зовут», НЕ «я живу»). "
+                           "Опирайся ТОЛЬКО на факты из [Память]. Если нужного факта там нет — "
+                           "честно скажи, что не знаешь / пользователь не говорил, и НЕ выдумывай.")
         msgs = ([{"role": "system", "content": sys_content}] if sys_content else [])
         if history and not d.get("force"):
             msgs += history[-6:]          # last ~3 turns → conversational continuity

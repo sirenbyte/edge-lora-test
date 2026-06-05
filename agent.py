@@ -74,6 +74,21 @@ def _is_request(q):
     return q.lower().lstrip().startswith(_IMPERATIVE)
 
 
+def _trivial(q):
+    """Degenerate input — single letter / punctuation / '>' echo → not a real turn."""
+    return len(re.sub(r"[^\w]", "", q.lower())) < 2
+
+
+_FACT_STOP = {"запомни", "запиши", "что", "я", "мне", "меня", "мой", "моя", "мои",
+              "у", "это", "зовут", "есть", "в", "на", "и", "а"}
+
+
+def _has_content(q):
+    """A fact needs real content: ≥1 non-stopword token of length ≥3 ('запомни с' → no)."""
+    toks = [w for w in re.sub(r"[^\w\s]", " ", q.lower()).split() if w not in _FACT_STOP]
+    return any(len(w) >= 3 for w in toks)
+
+
 def should_remember(q):
     low = q.lower().strip()
     if _is_question(q):
@@ -514,6 +529,9 @@ class Agent:
         return d
 
     def respond(self, q, history=None):
+        if _trivial(q):                            # 'а', 'с', '>', '' → ask, don't ramble/false-store
+            return {"mode": "analytical", "think": False, "tool": None, "result": None,
+                    "answer": "Не совсем понял — скажи подробнее, чем помочь?"}
         if vague_music(q.lower()):
             return self._music_pref(q)
         d = self._route(q, history)
@@ -523,17 +541,20 @@ class Agent:
         # personal FACT statement -> store + brief ack, instead of rambling.
         # A question is never a fact, even if the model mislabeled it 'fact'.
         is_fact = ((should_remember(q) or (d.get("fact") and not _is_question(q)))
-                   and not _is_request(q))           # 'расскажи про X' is not a fact
+                   and not _is_request(q)            # 'расскажи про X' is not a fact
+                   and _has_content(q))              # 'запомни с' has nothing to store
         if (d["mode"] == "analytical" and d["system"] is None and not d["tools"]
                 and not d.get("force") and is_fact):
             self.set_mode("analytical")
             pred, val = _extract_fact(self.model, self.tok, q)
-            if pred and val:
+            if pred and val and len(val.strip()) >= 2:
                 norm = self.mem.remember_fact(pred, val)   # structured + 2nd-person + persist
                 ans = f"Запомнил 👍 {norm}"
-            else:
-                self.ingest(q)                             # not cleanly structured -> raw doc
+            elif len(q.split()) >= 3:
+                self.ingest(q)                             # substantive but unstructured -> raw doc
                 ans = "Запомнил 👍"
+            else:
+                ans = "Не совсем понял, что запомнить — уточни?"   # don't false-store garbage
             return {"mode": "analytical", "think": False, "tool": None,
                     "result": None, "answer": ans}
         # question about ONE stored fact -> the model picks which stored field it is
@@ -659,7 +680,7 @@ def chat():
     hist = []                              # rolling conversation history for continuity
     while True:
         try:
-            q = input("> ").strip()
+            q = input("> ").strip().lstrip(">").strip()   # drop pasted-prompt '>' echoes
         except (EOFError, KeyboardInterrupt):
             print()
             break

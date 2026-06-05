@@ -30,9 +30,8 @@ from model_router import (classify as _classify, extract_fact as _extract_fact,
                           which_fact as _which_fact)
 from verifier import lexical_fix
 from vision_unload import load_text_only
-
-BASE = "mlx-community/Qwen3.5-4B-MLX-4bit"
-ADAPTERS = {"analytical": "adapters_qwen4b_v2", "creative": "adapters_qwen4b_creative"}
+from config import (BASE_MODEL as BASE, ADAPTERS, NOTES_FILE, REMINDERS_FILE,
+                    THINK_MAX_TOKENS)
 SYS_CREATIVE = ("Ты — Qiyas Edge в творческом режиме. Будь изобретательным: давай "
                 "разнообразные, яркие, образные идеи. Сразу к делу, без вступлений.")
 ROOM_ENUM = ["кухня", "спальня", "гостиная", "ванная", "коридор"]
@@ -137,8 +136,6 @@ MEDIA_TOOL = {"type": "function", "function": {"name": "play_music", "descriptio
 SEARCH_TOOL = {"type": "function", "function": {"name": "web_search", "description": "Поиск свежей информации в интернете",
     "parameters": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}}}
 ACTION_TOOLS = DEVICE_TOOLS + [REMINDER_TOOL, NOTE_TOOL, MEDIA_TOOL]
-NOTES_FILE = "/Users/abzaltuganbay/projects/edge-lora-test/notes.json"
-REMINDERS_FILE = "/Users/abzaltuganbay/projects/edge-lora-test/reminders.json"
 
 # ---------- safe calculator ----------
 _OPS = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
@@ -490,7 +487,7 @@ class Agent:
             gkw["logits_processors"] = make_logits_processors(
                 repetition_penalty=rep_penalty, repetition_context_size=40)
         # trade latency for quality: thinking turns need room for scratchpad + answer
-        mt = max_tokens if max_tokens is not None else (700 if think else 320)
+        mt = max_tokens if max_tokens is not None else (THINK_MAX_TOKENS if think else 320)
         return generate(self.model, self.tok, prompt=prompt, max_tokens=mt,
                         verbose=False, **gkw).strip()
 

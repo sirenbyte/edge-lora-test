@@ -19,7 +19,7 @@ import mlx.core as mx
 
 from vision_unload import load_text_only
 
-BASE = "mlx-community/Qwen3.5-4B-MLX-4bit"
+from config import BASE_MODEL as BASE
 
 # (grammatical, ungrammatical, phenomenon) — one minimal edit apart
 PAIRS = [

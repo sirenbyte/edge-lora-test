@@ -17,8 +17,8 @@ import datetime as _dt
 import json
 
 import prefs
+from config import NUDGE_LOG
 
-NUDGE_LOG = "/Users/abzaltuganbay/projects/edge-lora-test/nudges.json"
 COOLDOWN_HRS = 6.0          # don't repeat the same nudge within 6h
 DIGEST_COOLDOWN_HRS = 20.0  # offer a hobby digest at most ~once a day
 DAILY_CAP = 3               # at most 3 proactive nudges per day

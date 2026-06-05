@@ -12,7 +12,7 @@ Back-compat API kept for agent.py: log_play(query), top_music(), summary(), PREF
 import datetime as _dt
 import json
 
-PREFS_FILE = "/Users/abzaltuganbay/projects/edge-lora-test/preferences.json"
+from config import PREFS_FILE
 
 SIGNAL_W = {"play": 1.0, "choose": 1.0, "complete": 1.5, "finish": 1.5,
             "like": 2.0, "skip": -1.0, "dislike": -2.0}

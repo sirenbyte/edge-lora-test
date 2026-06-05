@@ -23,7 +23,7 @@ from mlx.utils import tree_flatten
 from mlx_lm.tuner.utils import linear_to_lora_layers
 from vision_unload import load_text_only
 
-BASE = "mlx-community/Qwen3.5-4B-MLX-4bit"
+from config import BASE_MODEL as BASE
 ADAPTER_DIR = Path("adapters_dpo")
 NUM_LAYERS = 8
 LORA_CFG = {"rank": 8, "scale": 16.0, "dropout": 0.0}

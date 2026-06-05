@@ -17,10 +17,7 @@ from pathlib import Path
 import memory_plant_rs as mp
 
 from embed import DIM, cosine, embed
-
-DOC_STORE = "/Users/abzaltuganbay/projects/edge-lora-test/mp_docs.bin"
-FACTS_STORE = "/Users/abzaltuganbay/projects/edge-lora-test/mp_facts.json"
-USER = "demo"
+from config import DOC_STORE, FACTS_STORE, MEM_USER as USER
 
 # render a structured fact as a 2nd-person sentence — so RECALL echoes the right
 # person ("тебя зовут…", not "меня зовут…") regardless of how it was phrased.

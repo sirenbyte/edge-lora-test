@@ -19,8 +19,8 @@ from functools import lru_cache
 import mlx.core as mx
 from mlx_embeddings.utils import load
 
-MODEL = "intfloat/multilingual-e5-small"
-DIM = 384
+from config import E5_MODEL as MODEL, E5_DIM as DIM
+
 _PREFIX = {"query": "query: ", "passage": "passage: "}
 
 

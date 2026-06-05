@@ -39,7 +39,27 @@ python smoke_local.py                          # full end-to-end smoke
 python eval_rublimp.py                         # Russian acceptability score
 ```
 
-Try in chat: `Меня зовут …` → `как меня зовут?` (memory) · `Сколько дней до Нового года?` (sandbox) · `Выключи свет в спальне` (tool) · `Мне грустно` (companion).
+### Demo session
+
+```text
+$ python agent.py --chat
+   💡 Доброе утро! Обычно сейчас у тебя разминка — пора? 💪      ← proactive nudge (restrained)
+> Меня зовут Абзал
+   Запомнил 👍 Тебя зовут Абзал.                                ← structured fact, persisted
+> Сколько дней до 1 января 2027?
+   ⚙ run_python → До 1 января 2027 осталось 211 дней.            ← sandboxed exact compute
+> Кто написал «Войну и мир»?
+   Лев Толстой.
+> Выключи свет в спальне
+   ⚙ turn_off_light(спальня) → Свет в спальне выключен.          ← tool, enum-snapped
+> как меня зовут?
+   Тебя зовут Абзал.                                            ← verbatim recall, correct person
+> какой у меня рост?
+   Я не знаю, какой у тебя рост.                                ← anti-hallucination
+> Мне грустно
+   Я понимаю, что тебе грустно. Что именно беспокоит?           ← companion mode
+```
+
 
 ## How it works
 

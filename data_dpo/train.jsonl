@@ -1,0 +1,215 @@
+{"prompt": "", "chosen": "Кошка спала утром.", "rejected": "Кошка спал утром.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Я живу домой.", "rejected": "Я живёшь домой.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "У меня шесть столов.", "rejected": "У меня шесть стола.", "phenomenon": "numeral-gen"}
+{"prompt": "", "chosen": "Ты знаешь по делам.", "rejected": "Ты знают по делам.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Ты знаешь в кино.", "rejected": "Ты знают в кино.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Какая высокая башня.", "rejected": "Какая высокий башня.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Я работаю по делам.", "rejected": "Я работает по делам.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Я иду на работу.", "rejected": "Я идёшь на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Вот быстрая река.", "rejected": "Вот быстрый река.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Они идут домой.", "rejected": "Они идёт домой.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Ты идёшь в парк.", "rejected": "Ты иду в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Сестра уехала книгу.", "rejected": "Сестра уехал книгу.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Больше нет ответа.", "rejected": "Больше нет ответ.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Здесь три дома.", "rejected": "Здесь три дом.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Она сказала вчера.", "rejected": "Она сказал вчера.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Туристы поют в школе.", "rejected": "Туристы поёт в школе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Я иду в парк.", "rejected": "Я идёшь в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Вот новая машина.", "rejected": "Вот новый машина.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Кошка спала ужин.", "rejected": "Кошка спал ужин.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "У меня нет ответа.", "rejected": "У меня нет ответ.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Они идут в город.", "rejected": "Они идёт в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Здесь четыре часа.", "rejected": "Здесь четыре час.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Он живёт в маленькой деревне.", "rejected": "Он живёт в маленький деревне.", "phenomenon": "adj-prep-case"}
+{"prompt": "", "chosen": "Какая тихая улица.", "rejected": "Какая тихий улица.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Я работаю на работу.", "rejected": "Я работает на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Это высокая башня.", "rejected": "Это высокий башня.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Они работают в город.", "rejected": "Они работаешь в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Ты идёшь домой.", "rejected": "Ты иду домой.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Здесь четыре дома.", "rejected": "Здесь четыре дом.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "У меня десять рублей.", "rejected": "У меня десять рубля.", "phenomenon": "numeral-gen"}
+{"prompt": "", "chosen": "Это вкусная еда.", "rejected": "Это вкусный еда.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Рабочие смеются в зале.", "rejected": "Рабочие смеётся в зале.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Ты живёшь в парк.", "rejected": "Ты живут в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Ты знаешь в город.", "rejected": "Ты знают в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Это быстрая река.", "rejected": "Это быстрый река.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Моя идея — лучшая.", "rejected": "Мой идея — лучшая.", "phenomenon": "poss-gender"}
+{"prompt": "", "chosen": "Очень добрая женщина.", "rejected": "Очень добрый женщина.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Моя комната — лучшая.", "rejected": "Мой комната — лучшая.", "phenomenon": "poss-gender"}
+{"prompt": "", "chosen": "Вот интересная книга.", "rejected": "Вот интересный книга.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Какая яркая лампа.", "rejected": "Какая яркий лампа.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Музыканты смеются дома.", "rejected": "Музыканты смеётся дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Какая большая комната.", "rejected": "Какая большой комната.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Ученики работают в школе.", "rejected": "Ученики работает в школе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Вот старая школа.", "rejected": "Вот старый школа.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Я живу по делам.", "rejected": "Я живёшь по делам.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Она пришла вчера.", "rejected": "Она пришёл вчера.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Больше нет времени.", "rejected": "Больше нет время.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "У меня нет денег.", "rejected": "У меня нет деньги.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Рабочие идут дома.", "rejected": "Рабочие идёт дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Ты идёшь на работу.", "rejected": "Ты иду на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Какая добрая женщина.", "rejected": "Какая добрый женщина.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Очень старая школа.", "rejected": "Очень старый школа.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Это умная собака.", "rejected": "Это умный собака.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Туристы работают в школе.", "rejected": "Туристы работает в школе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Здесь два года.", "rejected": "Здесь два лет.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Она сказала домой.", "rejected": "Она сказал домой.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Очень тихая улица.", "rejected": "Очень тихий улица.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Друзья идут на работе.", "rejected": "Друзья идёт на работе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Очень большая комната.", "rejected": "Очень большой комната.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Здесь три года.", "rejected": "Здесь три лет.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Музыканты поют в школе.", "rejected": "Музыканты поёт в школе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Здесь три стола.", "rejected": "Здесь три стол.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Здесь четыре стола.", "rejected": "Здесь четыре стол.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Здесь три часа.", "rejected": "Здесь три час.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Ты живёшь на работу.", "rejected": "Ты живут на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "У меня нет времени.", "rejected": "У меня нет время.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Я иду домой.", "rejected": "Я идёшь домой.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Она сказала утром.", "rejected": "Она сказал утром.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Туристы идут во дворе.", "rejected": "Туристы идёт во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Друзья играют на улице.", "rejected": "Друзья играет на улице.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Туристы спорят на улице.", "rejected": "Туристы спорит на улице.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Вот добрая женщина.", "rejected": "Вот добрый женщина.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "У меня восемь часов.", "rejected": "У меня восемь часа.", "phenomenon": "numeral-gen"}
+{"prompt": "", "chosen": "Они идут в парк.", "rejected": "Они идёт в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Кошка спала книгу.", "rejected": "Кошка спал книгу.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Она сказала ужин.", "rejected": "Она сказал ужин.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Дети смеются дома.", "rejected": "Дети смеётся дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Какая красивая девушка.", "rejected": "Какая красивый девушка.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Мама готовила ужин.", "rejected": "Мама готовил ужин.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "У меня много людей.", "rejected": "У меня много человеки.", "phenomenon": "numeral-gen"}
+{"prompt": "", "chosen": "Ты идёшь в город.", "rejected": "Ты иду в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Вот длинная дорога.", "rejected": "Вот длинный дорога.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Здесь нет денег.", "rejected": "Здесь нет деньги.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Какая новая машина.", "rejected": "Какая новый машина.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Вот тихая улица.", "rejected": "Вот тихий улица.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Они идут на работу.", "rejected": "Они идёт на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Дети идут на работе.", "rejected": "Дети идёт на работе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Здесь нет проблемы.", "rejected": "Здесь нет проблема.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Дети играют во дворе.", "rejected": "Дети играет во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Рабочие работают во дворе.", "rejected": "Рабочие работает во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Вот высокая башня.", "rejected": "Вот высокий башня.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Это старая школа.", "rejected": "Это старый школа.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Ученики ждут на работе.", "rejected": "Ученики ждёт на работе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Он живёт в старом парке.", "rejected": "Он живёт в старый парке.", "phenomenon": "adj-prep-case"}
+{"prompt": "", "chosen": "У меня пять книг.", "rejected": "У меня пять книги.", "phenomenon": "numeral-gen"}
+{"prompt": "", "chosen": "Друзья спорят дома.", "rejected": "Друзья спорит дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Он живёт в большом городе.", "rejected": "Он живёт в большой городе.", "phenomenon": "adj-prep-case"}
+{"prompt": "", "chosen": "Мы идём на работу.", "rejected": "Мы идёт на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Сестра уехала ужин.", "rejected": "Сестра уехал ужин.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Ты знаешь домой.", "rejected": "Ты знают домой.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Студенты спорят в кафе.", "rejected": "Студенты спорит в кафе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Она пришла домой.", "rejected": "Она пришёл домой.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Туристы читают на улице.", "rejected": "Туристы читает на улице.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "У меня несколько минут.", "rejected": "У меня несколько минуты.", "phenomenon": "numeral-gen"}
+{"prompt": "", "chosen": "Ты идёшь по делам.", "rejected": "Ты иду по делам.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Мама готовила вчера.", "rejected": "Мама готовил вчера.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Они идут по делам.", "rejected": "Они идёт по делам.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Музыканты спорят в парке.", "rejected": "Музыканты спорит в парке.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Студенты бегут в кафе.", "rejected": "Студенты бежит в кафе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Больше нет проблемы.", "rejected": "Больше нет проблема.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Дети смеются во дворе.", "rejected": "Дети смеётся во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Очень интересная книга.", "rejected": "Очень интересный книга.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Туристы спорят в кафе.", "rejected": "Туристы спорит в кафе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Туристы смеются в парке.", "rejected": "Туристы смеётся в парке.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Это яркая лампа.", "rejected": "Это яркий лампа.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Мы идём в город.", "rejected": "Мы идёт в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Очень красивая девушка.", "rejected": "Очень красивый девушка.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Мы идём в кино.", "rejected": "Мы идёт в кино.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "У него нет времени.", "rejected": "У него нет время.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Коллеги работают дома.", "rejected": "Коллеги работает дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Соседи идут в школе.", "rejected": "Соседи идёт в школе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Ученики смеются в зале.", "rejected": "Ученики смеётся в зале.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Я живу в парк.", "rejected": "Я живёшь в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Они работают на работу.", "rejected": "Они работаешь на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Гости смеются на работе.", "rejected": "Гости смеётся на работе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Сестра уехала утром.", "rejected": "Сестра уехал утром.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "У него нет идеи.", "rejected": "У него нет идея.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Девочка читала ужин.", "rejected": "Девочка читал ужин.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Он живёт в новом доме.", "rejected": "Он живёт в новый доме.", "phenomenon": "adj-prep-case"}
+{"prompt": "", "chosen": "Ты знаешь в парк.", "rejected": "Ты знают в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Какая свежая газета.", "rejected": "Какая свежий газета.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Друзья спорят в кафе.", "rejected": "Друзья спорит в кафе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "У него нет ответа.", "rejected": "У него нет ответ.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Очень новая машина.", "rejected": "Очень новый машина.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Ты живёшь в город.", "rejected": "Ты живут в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Это большая комната.", "rejected": "Это большой комната.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Больше нет денег.", "rejected": "Больше нет деньги.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "У него нет проблемы.", "rejected": "У него нет проблема.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Гости бегут во дворе.", "rejected": "Гости бежит во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Моя сестра — лучшая.", "rejected": "Мой сестра — лучшая.", "phenomenon": "poss-gender"}
+{"prompt": "", "chosen": "Ты идёшь в кино.", "rejected": "Ты иду в кино.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Я работаю в город.", "rejected": "Я работает в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Музыканты спорят в кафе.", "rejected": "Музыканты спорит в кафе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Это тёплая куртка.", "rejected": "Это тёплый куртка.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Друзья бегут в парке.", "rejected": "Друзья бежит в парке.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Рабочие ждут в зале.", "rejected": "Рабочие ждёт в зале.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Рабочие читают дома.", "rejected": "Рабочие читает дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Какая чистая вода.", "rejected": "Какая чистый вода.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Мама готовила утром.", "rejected": "Мама готовил утром.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Вот красивая девушка.", "rejected": "Вот красивый девушка.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Очень длинная дорога.", "rejected": "Очень длинный дорога.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Это чистая вода.", "rejected": "Это чистый вода.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Ты знаешь на работу.", "rejected": "Ты знают на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Какая быстрая река.", "rejected": "Какая быстрый река.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Они работают в парк.", "rejected": "Они работаешь в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Мы идём в парк.", "rejected": "Мы идёт в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Вот вкусная еда.", "rejected": "Вот вкусный еда.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Она сказала книгу.", "rejected": "Она сказал книгу.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Кошка спала домой.", "rejected": "Кошка спал домой.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Моя мама — лучшая.", "rejected": "Мой мама — лучшая.", "phenomenon": "poss-gender"}
+{"prompt": "", "chosen": "Гости работают в школе.", "rejected": "Гости работает в школе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Я живу в кино.", "rejected": "Я живёшь в кино.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Ученики играют во дворе.", "rejected": "Ученики играет во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Очень яркая лампа.", "rejected": "Очень яркий лампа.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Гости спорят во дворе.", "rejected": "Гости спорит во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Я работаю в кино.", "rejected": "Я работает в кино.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Это интересная книга.", "rejected": "Это интересный книга.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Здесь нет ответа.", "rejected": "Здесь нет ответ.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Ты живёшь по делам.", "rejected": "Ты живут по делам.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Она пришла ужин.", "rejected": "Она пришёл ужин.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Здесь три яблока.", "rejected": "Здесь три яблоко.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Здесь четыре яблока.", "rejected": "Здесь четыре яблоко.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Я живу в город.", "rejected": "Я живёшь в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Они работают домой.", "rejected": "Они работаешь домой.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Девочка читала домой.", "rejected": "Девочка читал домой.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Девочка читала вчера.", "rejected": "Девочка читал вчера.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Мы идём по делам.", "rejected": "Мы идёт по делам.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Друзья ждут во дворе.", "rejected": "Друзья ждёт во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Я иду в город.", "rejected": "Я идёшь в город.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Это длинная дорога.", "rejected": "Это длинный дорога.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Коллеги поют в зале.", "rejected": "Коллеги поёт в зале.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Рабочие играют дома.", "rejected": "Рабочие играет дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Какая интересная книга.", "rejected": "Какая интересный книга.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "У меня семь домов.", "rejected": "У меня семь дома.", "phenomenon": "numeral-gen"}
+{"prompt": "", "chosen": "Рабочие играют на работе.", "rejected": "Рабочие играет на работе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Вот яркая лампа.", "rejected": "Вот яркий лампа.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Он живёт в тихой комнате.", "rejected": "Он живёт в тихий комнате.", "phenomenon": "adj-prep-case"}
+{"prompt": "", "chosen": "У него нет денег.", "rejected": "У него нет деньги.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Здесь два часа.", "rejected": "Здесь два час.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Здесь два стола.", "rejected": "Здесь два стол.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Здесь четыре года.", "rejected": "Здесь четыре лет.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Я живу на работу.", "rejected": "Я живёшь на работу.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Больше нет идеи.", "rejected": "Больше нет идея.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Я работаю в парк.", "rejected": "Я работает в парк.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Соседи читают дома.", "rejected": "Соседи читает дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Это тихая улица.", "rejected": "Это тихий улица.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Здесь нет времени.", "rejected": "Здесь нет время.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Сестра уехала домой.", "rejected": "Сестра уехал домой.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Кошка спала вчера.", "rejected": "Кошка спал вчера.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Это добрая женщина.", "rejected": "Это добрый женщина.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Твоя книга — лучшая.", "rejected": "Твой книга — лучшая.", "phenomenon": "poss-gender"}
+{"prompt": "", "chosen": "Она пришла утром.", "rejected": "Она пришёл утром.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Девочка читала книгу.", "rejected": "Девочка читал книгу.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "У меня нет идеи.", "rejected": "У меня нет идея.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Ты живёшь в кино.", "rejected": "Ты живут в кино.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Коллеги спорят дома.", "rejected": "Коллеги спорит дома.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Девочка читала утром.", "rejected": "Девочка читал утром.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Очень свежая газета.", "rejected": "Очень свежий газета.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Ты живёшь домой.", "rejected": "Ты живут домой.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Они идут в кино.", "rejected": "Они идёт в кино.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Очень быстрая река.", "rejected": "Очень быстрый река.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Музыканты ждут на улице.", "rejected": "Музыканты ждёт на улице.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Здесь два яблока.", "rejected": "Здесь два яблоко.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Мама готовила книгу.", "rejected": "Мама готовил книгу.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Гости спорят в кафе.", "rejected": "Гости спорит в кафе.", "phenomenon": "verb-number"}

@@ -1,0 +1,19 @@
+{"prompt": "", "chosen": "Очень чистая вода.", "rejected": "Очень чистый вода.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Наша команда — лучшая.", "rejected": "Наш команда — лучшая.", "phenomenon": "poss-gender"}
+{"prompt": "", "chosen": "Вот большая комната.", "rejected": "Вот большой комната.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Соседи идут на улице.", "rejected": "Соседи идёт на улице.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Рабочие бегут во дворе.", "rejected": "Рабочие бежит во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Она пришла книгу.", "rejected": "Она пришёл книгу.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Мы идём домой.", "rejected": "Мы идёт домой.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Очень тёплая куртка.", "rejected": "Очень тёплый куртка.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Соседи смеются во дворе.", "rejected": "Соседи смеётся во дворе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Он живёт в светлой квартире.", "rejected": "Он живёт в светлый квартире.", "phenomenon": "adj-prep-case"}
+{"prompt": "", "chosen": "Сестра уехала вчера.", "rejected": "Сестра уехал вчера.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "Мама готовила домой.", "rejected": "Мама готовил домой.", "phenomenon": "past-gender"}
+{"prompt": "", "chosen": "У меня нет проблемы.", "rejected": "У меня нет проблема.", "phenomenon": "genitive-neg"}
+{"prompt": "", "chosen": "Здесь два дома.", "rejected": "Здесь два дом.", "phenomenon": "numeral-two"}
+{"prompt": "", "chosen": "Я иду в кино.", "rejected": "Я идёшь в кино.", "phenomenon": "verb-person"}
+{"prompt": "", "chosen": "Друзья играют в парке.", "rejected": "Друзья играет в парке.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Какая тёплая куртка.", "rejected": "Какая тёплый куртка.", "phenomenon": "adj-gender"}
+{"prompt": "", "chosen": "Коллеги смеются на работе.", "rejected": "Коллеги смеётся на работе.", "phenomenon": "verb-number"}
+{"prompt": "", "chosen": "Здесь нет идеи.", "rejected": "Здесь нет идея.", "phenomenon": "genitive-neg"}

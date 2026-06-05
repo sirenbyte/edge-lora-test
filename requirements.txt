@@ -1,0 +1,9 @@
+# Qiyas Edge — on-device assistant (Apple Silicon / MLX).
+# The Rust memory core `memory_plant_rs` is built separately — see README.
+mlx>=0.31
+mlx-lm>=0.31
+mlx-embeddings>=0.1
+numpy>=2.0
+fasttext-wheel>=0.9      # ru/en language id for hobby-pack curation
+trafilatura>=2.0         # article extraction for hobby packs
+ddgs>=9.0                # web search (DuckDuckGo, no key)
